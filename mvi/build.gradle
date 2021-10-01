@@ -9,7 +9,7 @@ android {
     compileSdk target_sdk
 
     defaultConfig {
-        applicationId "com.github.dudgns0507.mvi"
+        applicationId "com.github.dudgns0507.mvvm"
         minSdk min_sdk
         targetSdk target_sdk
         versionCode version_code
@@ -25,11 +25,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
     buildFeatures {
         dataBinding = true
