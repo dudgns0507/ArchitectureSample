@@ -1,2 +1,2 @@
-# ArchitectureSample
- Architecture Study with MVVM and MVI
+# Android-Architecture-Sample
+ Android Architecture Study with MVVM and MVI
