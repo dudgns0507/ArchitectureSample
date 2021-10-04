@@ -6,11 +6,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.github.dudgns0507.core.base.BaseViewModel
 import com.github.dudgns0507.core.util.network.Resource
-import com.github.dudgns0507.domain.dto.Post
 import com.github.dudgns0507.domain.usecase.JsonUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -41,7 +41,7 @@ class MainViewModel @Inject constructor(
             is PostsEvent.Delete -> viewModelScope.launch {
                 jsonUseCases.deletePostUseCase(event.postId)
             }
-            PostsEvent.ReadFirst -> {
+            is PostsEvent.ReadFirst -> {
                 state.value?.let {
                     _state.value = it.copy(
                         posts = emptyList(),
