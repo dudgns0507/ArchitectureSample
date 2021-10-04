@@ -14,7 +14,7 @@ import javax.inject.Singleton
 class RepositoryModule {
     @Provides
     @Singleton
-    fun bindDataRepository(service: JsonService): DataRepositoryImpl {
+    fun bindDataRepository(service: JsonService): DataRepository {
         return DataRepositoryImpl(service)
     }
 }

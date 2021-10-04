@@ -1,6 +1,8 @@
 package com.github.dudgns0507.mvvm.di
 
 import com.github.dudgns0507.data.DataManager
+import com.github.dudgns0507.domain.repository.DataRepository
+import com.github.dudgns0507.domain.usecase.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +16,18 @@ class AppModule {
     @Singleton
     fun provideDataManager(): DataManager {
         return DataManager()
+    }
+
+    @Provides
+    @Singleton
+    fun provideJsonUseCases(repository: DataRepository): JsonUseCases {
+        return JsonUseCases(
+            getPostsUseCase = GetPostsUseCase(repository),
+            getPostUseCase = GetPostUseCase(repository),
+            getCommentsUseCase = GetCommentsUseCase(repository),
+            patchPostUseCase = PatchPostUseCase(repository),
+            deletePostUseCase = DeletePostUseCase(repository)
+        )
     }
 }
 

@@ -2,6 +2,8 @@ package com.github.dudgns0507.mvvm.di
 
 import android.content.Context
 import com.github.dudgns0507.core.Constant
+import com.github.dudgns0507.core.moshi.MyKotlinJsonAdapterFactory
+import com.github.dudgns0507.core.moshi.MyStandardJsonAdapters
 import com.github.dudgns0507.core.util.network.NetworkInterceptor
 import com.github.dudgns0507.core.util.network.SafeCallAdapterFactory
 import com.github.dudgns0507.data.jsonplaceholder.JsonService
@@ -52,8 +54,8 @@ class NetworkModule {
     @Singleton
     fun provideMoshi(): Moshi {
         return Moshi.Builder()
-//            .add(MyKotlinJsonAdapterFactory())
-//            .add(MyStandardJsonAdapters.FACTORY)
+            .add(MyKotlinJsonAdapterFactory())
+            .add(MyStandardJsonAdapters.FACTORY)
             .build()
     }
 
