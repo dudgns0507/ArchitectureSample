@@ -49,7 +49,7 @@ class PostActivity : BaseActivity<ActivityPostBinding, PostBundle, PostViewModel
                     .setMessage(R.string.check_delete)
                     .setPositiveButton("확인") { _, _ ->
                         viewModel.bundle?.let {
-                            viewModel.deletePost(it.id)
+                            viewModel.onEvent(PostDetailEvents.Delete(it.id))
                         }
                     }
                     .setNegativeButton("취소") { d, _ ->
@@ -85,14 +85,17 @@ class PostActivity : BaseActivity<ActivityPostBinding, PostBundle, PostViewModel
                 dialog.dismiss()
                 finish()
             }
+
+            observe(error) {
+                Toast.makeText(this@PostActivity, it, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     override fun loadData() {
         viewModel.apply {
             bundle?.let {
-                requestPost(it.id)
-                requestComments(it.id)
+                onEvent(PostDetailEvents.Read(it.id))
             }
         }
     }

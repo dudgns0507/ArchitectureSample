@@ -9,7 +9,7 @@ import retrofit2.http.*
 
 interface JsonService {
     @GET("posts")
-    fun requestPosts(
+    suspend fun requestPosts(
         @Query("_start") start: Int,
         @Query("_limit") limit: Int
     ): Response<List<ResPost>>
