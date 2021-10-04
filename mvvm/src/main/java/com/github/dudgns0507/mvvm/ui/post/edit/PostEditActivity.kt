@@ -6,9 +6,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import com.github.dudgns0507.core.base.BaseActivity
 import com.github.dudgns0507.core.util.ext.observe
+import com.github.dudgns0507.domain.dto.Post
 import com.github.dudgns0507.mvvm.R
-import com.github.dudgns0507.mvvm.data.model.ResponsePost
-import com.github.dudgns0507.mvvm.data.model.RequestPostEdit
 import com.github.dudgns0507.mvvm.databinding.ActivityPostEditBinding
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +18,7 @@ class PostEditActivity : BaseActivity<ActivityPostEditBinding, PostEditBundle, P
     override val viewModel: PostEditViewModel by viewModels()
 
     companion object {
-        fun callingIntent(context: Context, post: ResponsePost): Intent {
+        fun callingIntent(context: Context, post: Post): Intent {
             val intent = Intent(context, PostEditActivity::class.java)
             intent.putExtra(BUNDLE_KEY, Gson().toJson(post))
             return intent
@@ -36,7 +35,7 @@ class PostEditActivity : BaseActivity<ActivityPostEditBinding, PostEditBundle, P
             btSave.setOnClickListener {
                 bundle?.let {
                     viewModel.patchPost(
-                        it.id, RequestPostEdit(
+                        it.id, Post(
                             title = etTitle.text.toString(),
                             body = etBody.text.toString()
                         )

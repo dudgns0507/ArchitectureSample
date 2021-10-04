@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ArchitectureSample">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,6 +22,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.post.PostActivity"
+            android:exported="false" />
+        <activity android:name=".ui.post.edit.PostEditActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

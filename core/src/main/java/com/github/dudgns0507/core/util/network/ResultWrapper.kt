@@ -2,7 +2,8 @@ package com.github.dudgns0507.core.util.network
 
 import androidx.lifecycle.MutableLiveData
 import okhttp3.Headers
-import java.io.IOException
+import okhttp3.ResponseBody
+import retrofit2.Response
 
 sealed class ResultWrapper<out T : Any, out U : Any> {
 
@@ -19,7 +20,7 @@ sealed class ResultWrapper<out T : Any, out U : Any> {
     /**
      * Network error
      */
-    data class NetworkError(val error: IOException) : ResultWrapper<Nothing, Nothing>()
+    data class NetworkError(val error: ResponseBody?) : ResultWrapper<Nothing, Nothing>()
 
     /**
      * For example, json parsing error

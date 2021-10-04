@@ -9,8 +9,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.dudgns0507.core.base.BaseActivity
 import com.github.dudgns0507.core.util.ext.observe
+import com.github.dudgns0507.domain.dto.Post
 import com.github.dudgns0507.mvvm.R
-import com.github.dudgns0507.mvvm.data.model.ResponsePost
 import com.github.dudgns0507.mvvm.databinding.ActivityPostBinding
 import com.github.dudgns0507.mvvm.ui.post.edit.PostEditActivity
 import com.google.gson.Gson
@@ -26,7 +26,7 @@ class PostActivity : BaseActivity<ActivityPostBinding, PostBundle, PostViewModel
     private lateinit var commentAdapter: CommentAdapter
 
     companion object {
-        fun callingIntent(context: Context, post: ResponsePost): Intent {
+        fun callingIntent(context: Context, post: Post): Intent {
             val intent = Intent(context, PostActivity::class.java)
             intent.putExtra(BUNDLE_KEY, Gson().toJson(post))
             return intent
@@ -35,7 +35,7 @@ class PostActivity : BaseActivity<ActivityPostBinding, PostBundle, PostViewModel
 
     override fun viewBinding() {
         binding.apply {
-            viewModel.bundle = Gson().fromJson(intent.getStringExtra(BUNDLE_KEY), ResponsePost::class.java)
+            viewModel.bundle = Gson().fromJson(intent.getStringExtra(BUNDLE_KEY), Post::class.java)
 
             commentAdapter = CommentAdapter()
             val layoutManager = LinearLayoutManager(this@PostActivity)

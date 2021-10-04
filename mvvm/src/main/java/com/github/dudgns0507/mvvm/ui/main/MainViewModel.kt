@@ -1,17 +1,12 @@
 package com.github.dudgns0507.mvvm.ui.main
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.github.dudgns0507.core.base.BaseViewModel
 import com.github.dudgns0507.domain.usecase.JsonUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,8 +15,8 @@ class MainViewModel @Inject constructor(
     state: SavedStateHandle,
     private val jsonUseCases: JsonUseCases
 ) : BaseViewModel(state) {
-    private val _state = MutableLiveData(PostsState())
-    val state: LiveData<PostsState> = _state
+    private val _state = MutableStateFlow(PostsState())
+    val state: StateFlow<PostsState> = _state
 
     private var getPostsJob: Job? = null
 
@@ -38,7 +33,6 @@ class MainViewModel @Inject constructor(
                 }
                 getPosts(event.start, event.limit)
             }
-            is PostsEvent.Detail -> TODO()
             is PostsEvent.Patch -> viewModelScope.launch {
                 jsonUseCases.patchPostUseCase(event.postId, event.post)
             }
@@ -61,17 +55,24 @@ class MainViewModel @Inject constructor(
     }
 
     private fun getPosts(start: Int, limit: Int) {
-        viewModelScope.launch {
-            getPostsJob?.cancel()
-            getPostsJob = jsonUseCases.getPostsUseCase(start, limit)
-                .onEach { posts ->
-                    _state.value = state.value.copy(
-                        posts = state.value.posts + posts,
-                        start = start,
-                        limit = limit
-                    )
+        getPostsJob?.cancel()
+        getPostsJob = viewModelScope.launch {
+            jsonUseCases.getPostsUseCase(start, limit)
+                .onStart {
+                    // Loading
                 }
-                .launchIn(viewModelScope)
+                .catch { exception ->
+                    // Hide Loading
+                    // Error Handling
+                }
+                .collect { baseResult ->
+                    // Hide Loading
+                    // Result Handling
+//                    when(baseResult){
+//                        is BaseResult.Error -> state.value = LoginActivityState.ErrorLogin(baseResult.rawResponse)
+//                        is BaseResult.Success -> state.value = LoginActivityState.SuccessLogin(baseResult.data)
+//                    }
+                }
         }
     }
 }
