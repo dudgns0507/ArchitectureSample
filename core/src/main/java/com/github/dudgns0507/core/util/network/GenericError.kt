@@ -3,7 +3,7 @@ package com.github.dudgns0507.core.util.network
 import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @JsonClass(generateAdapter = false)
 @Parcelize

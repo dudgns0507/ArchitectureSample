@@ -2,27 +2,28 @@ package com.github.dudgns0507.domain.repository
 
 import com.github.dudgns0507.domain.dto.Comment
 import com.github.dudgns0507.domain.dto.Post
+import kotlinx.coroutines.flow.Flow
 
 interface DataRepository {
     suspend fun requestPosts(
         start: Int,
         limit: Int
-    ): List<Post>
+    ): Flow<List<Post>>
 
     suspend fun requestPost(
         postId: Int
-    ): Post
+    ): Flow<Post>
 
     suspend fun requestPostComments(
         postId: Int
-    ): List<Comment>
+    ): Flow<List<Comment>>
 
     suspend fun deletePost(
         postId: Int
-    ): String
+    )
 
     suspend fun patchPost(
         postId: Int,
         post: Post
-    ): Post
+    ): Flow<Post>
 }
