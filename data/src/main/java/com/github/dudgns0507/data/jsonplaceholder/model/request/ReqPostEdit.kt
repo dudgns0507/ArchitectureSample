@@ -1,4 +1,4 @@
-package com.github.dudgns0507.core.util.network
+package com.github.dudgns0507.data.jsonplaceholder.model.request
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 
 @JsonClass(generateAdapter = false)
 @Parcelize
-data class GenericError(
-    @Json(name = "status_code") val statusCode: String,
-    @Json(name = "status_message") val statusMessage: String
+data class ReqPostEdit(
+    @Json(name = "title") val title: String = "",
+    @Json(name = "body") val body: String = "",
 ) : Parcelable
