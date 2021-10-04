@@ -1,72 +1,64 @@
 package com.github.dudgns0507.data.jsonplaceholder
 
-import com.github.dudgns0507.core.util.network.GenericError
-import com.github.dudgns0507.core.util.network.ResultWrapper
+import com.github.dudgns0507.core.util.network.Resource
 import com.github.dudgns0507.data.jsonplaceholder.model.request.ReqPostEdit
 import com.github.dudgns0507.domain.dto.Comment
 import com.github.dudgns0507.domain.dto.Post
 import com.github.dudgns0507.domain.repository.DataRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import okhttp3.Headers
-import retrofit2.Response
 
 class DataRepositoryImpl(private val jsonService: JsonService) : DataRepository {
-    override suspend fun requestPosts(start: Int, limit: Int): Flow<ResultWrapper<List<Post>, GenericError>> {
+    override suspend fun requestPosts(start: Int, limit: Int): Flow<Resource<List<Post>>> {
         return flow {
             val response = jsonService.requestPosts(start, limit)
+
             if (response.isSuccessful) {
                 val body = response.body()
-                body?.let {
-                    check<List<Post>, GenericError>(response, it.map { post -> post.toModel() })
-                }
-                val headers = response.headers()
 
-                try {
-                    body?.let {
-                        emit(ResultWrapper.Success(headers, it.map { post -> post.toModel() }))
-                    } ?: kotlin.run {
-                        emit(ResultWrapper.UnknownError(null))
-                    }
-                } catch (throwable: Throwable) {
-                    emit(ResultWrapper.UnknownError(throwable))
+                body?.let { posts ->
+                    emit(Resource.Success(posts.map { post -> post.toModel() }))
+                } ?: kotlin.run {
+                    emit(Resource.Failure(null))
                 }
             } else {
-                emit(ResultWrapper.UnknownError(null))
+                emit(Resource.Failure(null))
             }
         }
     }
 
-    private fun <T : Any, U : Any> check(response: Response<Any>, t: T): ResultWrapper<T, U> {
-        if (response.isSuccessful) {
-            val body = response.body()
-            val headers = response.headers()
+    override suspend fun requestPost(postId: Int): Flow<Resource<Post>> {
+        return flow {
+            val response = jsonService.requestPost(postId)
 
-            try {
-                body?.let {
-                    return ResultWrapper.Success(headers, t)
+            if (response.isSuccessful) {
+                val body = response.body()
+
+                body?.let { post ->
+                    emit(Resource.Success(post.toModel()))
                 } ?: kotlin.run {
-                    return ResultWrapper.UnknownError(null)
+                    emit(Resource.Failure(null))
                 }
-            } catch (throwable: Throwable) {
-                return ResultWrapper.UnknownError(throwable)
+            } else {
+                emit(Resource.Failure(null))
             }
-        } else {
-            return ResultWrapper.UnknownError(null)
         }
     }
 
-    override suspend fun requestPost(postId: Int): Flow<Post> {
-        return jsonService.requestPost(postId).map { post ->
-            post.toModel()
-        }
-    }
+    override suspend fun requestPostComments(postId: Int): Flow<Resource<List<Comment>>> {
+        return flow {
+            val response = jsonService.requestPostComments(postId)
 
-    override suspend fun requestPostComments(postId: Int): Flow<List<Comment>> {
-        return jsonService.requestPostComments(postId).map { comments ->
-            comments.map { comment ->
-                comment.toModel()
+            if (response.isSuccessful) {
+                val body = response.body()
+
+                body?.let { comments ->
+                    emit(Resource.Success(comments.map { comment -> comment.toModel() }))
+                } ?: kotlin.run {
+                    emit(Resource.Failure(null))
+                }
+            } else {
+                emit(Resource.Failure(null))
             }
         }
     }
@@ -75,14 +67,26 @@ class DataRepositoryImpl(private val jsonService: JsonService) : DataRepository 
         jsonService.deletePost(postId)
     }
 
-    override suspend fun patchPost(postId: Int, newPost: Post): Flow<Post> {
-        return jsonService.patchPost(
-            postId, ReqPostEdit(
-                title = newPost.title,
-                body = newPost.body
+    override suspend fun patchPost(postId: Int, newPost: Post): Flow<Resource<Post>> {
+        return flow {
+            val response = jsonService.patchPost(
+                postId, ReqPostEdit(
+                    title = newPost.title,
+                    body = newPost.body
+                )
             )
-        ).map { post ->
-            post.toModel()
+
+            if (response.isSuccessful) {
+                val body = response.body()
+
+                body?.let { post ->
+                    emit(Resource.Success(post.toModel()))
+                } ?: kotlin.run {
+                    emit(Resource.Failure(null))
+                }
+            } else {
+                emit(Resource.Failure(null))
+            }
         }
     }
 }

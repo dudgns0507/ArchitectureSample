@@ -8,7 +8,7 @@ import com.github.dudgns0507.domain.dto.Post
 import com.github.dudgns0507.mvvm.databinding.PostItemBinding
 
 class PostAdapter : RecyclerView.Adapter<PostViewHolder>() {
-    private val posts = arrayListOf<Post>()
+    private var posts = arrayListOf<Post>()
 
     lateinit var onItemClickListener: OnItemClickListener<Post>
 
@@ -32,7 +32,7 @@ class PostAdapter : RecyclerView.Adapter<PostViewHolder>() {
     }
 
     fun addAll(p: List<Post>) {
-        posts.addAll(p)
+        posts = p.toMutableList() as ArrayList<Post>
         notifyDataSetChanged()
     }
 }

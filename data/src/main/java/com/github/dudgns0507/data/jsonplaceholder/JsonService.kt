@@ -3,12 +3,13 @@ package com.github.dudgns0507.data.jsonplaceholder
 import com.github.dudgns0507.data.jsonplaceholder.model.request.ReqPostEdit
 import com.github.dudgns0507.data.jsonplaceholder.model.response.ResComment
 import com.github.dudgns0507.data.jsonplaceholder.model.response.ResPost
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
 interface JsonService {
     @GET("posts")
-    suspend fun requestPosts(
+    fun requestPosts(
         @Query("_start") start: Int,
         @Query("_limit") limit: Int
     ): Response<List<ResPost>>

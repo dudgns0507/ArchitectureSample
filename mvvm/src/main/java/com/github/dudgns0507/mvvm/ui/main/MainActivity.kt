@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.dudgns0507.core.base.BaseActivity
 import com.github.dudgns0507.core.base.OnItemClickListener
+import com.github.dudgns0507.core.util.ext.observe
 import com.github.dudgns0507.domain.dto.Post
 import com.github.dudgns0507.mvvm.R
 import com.github.dudgns0507.mvvm.databinding.ActivityMainBinding
@@ -38,8 +39,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainBundle, MainViewModel
                     }
                 }
             }
-            val layoutManager = LinearLayoutManager(this@MainActivity)
 
+            val layoutManager = LinearLayoutManager(this@MainActivity)
             rvPost.layoutManager = layoutManager
             rvPost.setHasFixedSize(true)
             rvPost.adapter = postAdapter
@@ -60,11 +61,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainBundle, MainViewModel
     }
 
     override fun registObserve() {
-        lifecycleScope.launch {
-            viewModel.apply {
-                state.collect { posts ->
-                    postAdapter.addAll(posts.posts)
-                }
+        viewModel.apply {
+            observe(state) { posts ->
+                postAdapter.addAll(posts.posts)
             }
         }
     }
