@@ -6,3 +6,5 @@ data class Post(
     val title: String = "",
     val body: String = ""
 )
+
+class InvalidPostException(code: Int, message: String): Exception()

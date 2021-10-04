@@ -1,5 +1,7 @@
 package com.github.dudgns0507.core.util.ext
 
+import androidx.compose.runtime.State
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
