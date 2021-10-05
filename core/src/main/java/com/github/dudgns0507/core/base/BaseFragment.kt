@@ -22,7 +22,9 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         }
     }
 
-    lateinit var binding: T
+    private var _binding: T? = null
+    val binding get() = _binding!!
+
     lateinit var act: AppCompatActivity
     lateinit var baseAct: BaseActivity<*, *, *>
 
@@ -57,9 +59,14 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     }
 
     private fun initDataBinding(inflater: LayoutInflater, container: ViewGroup?) {
-        binding = DataBindingUtil.inflate(inflater, layoutResId, container, false)
+        _binding = DataBindingUtil.inflate(inflater, layoutResId, container, false)
         binding.apply {
             lifecycleOwner = this@BaseFragment
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

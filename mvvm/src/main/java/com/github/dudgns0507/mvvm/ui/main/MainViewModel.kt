@@ -1,15 +1,11 @@
 package com.github.dudgns0507.mvvm.ui.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.github.dudgns0507.core.base.BaseViewModel
 import com.github.dudgns0507.core.util.network.Resource
-import com.github.dudgns0507.domain.dto.Post
 import com.github.dudgns0507.domain.usecase.JsonUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,8 +15,9 @@ class MainViewModel @Inject constructor(
     state: SavedStateHandle,
     private val jsonUseCases: JsonUseCases
 ) : BaseViewModel(state) {
-    private val _state = MutableLiveData(PostsState())
-    val state: LiveData<PostsState> = _state
+
+    private val _postStates = MutableStateFlow(PostsState())
+    val postStates: StateFlow<PostsState> = _postStates
 
     init {
         getPosts(0, 10)
@@ -29,8 +26,9 @@ class MainViewModel @Inject constructor(
     fun onEvent(event: PostsEvent) {
         when(event) {
             is PostsEvent.Read -> {
-                if(event.start == state.value?.start &&
-                    event.limit == state.value?.limit) {
+                if(event.start == postStates.value.start &&
+                    event.limit == postStates.value.limit
+                ) {
                     return
                 }
                 getPosts(event.start, event.limit)
@@ -42,21 +40,17 @@ class MainViewModel @Inject constructor(
                 jsonUseCases.deletePostUseCase(event.postId)
             }
             PostsEvent.ReadFirst -> {
-                state.value?.let {
-                    _state.value = it.copy(
-                        posts = emptyList(),
-                        start = 0
-                    )
-                    getPosts(it.start, it.limit)
-                }
+                _postStates.value = postStates.value.copy(
+                    posts = emptyList(),
+                    start = 0
+                )
+                getPosts(postStates.value.start, postStates.value.limit)
             }
             is PostsEvent.ReadMore -> {
-                state.value?.let {
-                    _state.value = _state.value?.copy(
-                        start = it.start.plus(1)
-                    )
-                    getPosts(it.start, it.limit)
-                }
+                _postStates.value = postStates.value.copy(
+                    start = postStates.value.start.plus(1)
+                )
+                getPosts(postStates.value.start, postStates.value.limit)
             }
         }
     }
@@ -76,8 +70,8 @@ class MainViewModel @Inject constructor(
                     // Result Handling
                     when(result) {
                         is Resource.Success -> {
-                            state.value?.let {
-                                _state.value = it.copy(
+                            postStates.value.let {
+                                _postStates.value = it.copy(
                                     posts = it.posts + result.data
                                 )
                             }

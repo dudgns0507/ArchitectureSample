@@ -8,14 +8,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.dudgns0507.core.base.BaseActivity
 import com.github.dudgns0507.core.base.OnItemClickListener
-import com.github.dudgns0507.core.util.ext.observe
 import com.github.dudgns0507.domain.dto.Post
 import com.github.dudgns0507.mvvm.R
 import com.github.dudgns0507.mvvm.databinding.ActivityMainBinding
 import com.github.dudgns0507.mvvm.ui.post.PostActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding, MainBundle, MainViewModel>() {
@@ -62,8 +60,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainBundle, MainViewModel
 
     override fun registObserve() {
         viewModel.apply {
-            observe(state) { posts ->
-                postAdapter.addAll(posts.posts)
+            lifecycleScope.launchWhenCreated {
+                postStates.collect { state ->
+                    postAdapter.addAll(state.posts)
+                }
             }
         }
     }

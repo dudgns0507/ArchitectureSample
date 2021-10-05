@@ -21,7 +21,8 @@ abstract class BaseActivity<T : ViewDataBinding, B : Parcelable, V : BaseViewMod
         }
     }
 
-    lateinit var binding: T
+    private var _binding: T? = null
+    val binding get() = _binding!!
 
     abstract val layoutResId: Int
     abstract val viewModel: V
@@ -45,7 +46,7 @@ abstract class BaseActivity<T : ViewDataBinding, B : Parcelable, V : BaseViewMod
     }
 
     private fun initDataBinding() {
-        binding = DataBindingUtil.setContentView(this, layoutResId)
+        _binding = DataBindingUtil.setContentView(this, layoutResId)
         binding.apply {
             lifecycleOwner = this@BaseActivity
 
@@ -53,5 +54,10 @@ abstract class BaseActivity<T : ViewDataBinding, B : Parcelable, V : BaseViewMod
         }
         registObserve()
         loadData()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
