@@ -3,9 +3,11 @@ package com.github.dudgns0507.mvvm.ui.post
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.runtime.snapshots.Snapshot.Companion.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.dudgns0507.core.base.BaseActivity
 import com.github.dudgns0507.core.util.ext.observe
@@ -13,13 +15,15 @@ import com.github.dudgns0507.domain.dto.Post
 import com.github.dudgns0507.mvvm.R
 import com.github.dudgns0507.mvvm.databinding.ActivityPostBinding
 import com.github.dudgns0507.mvvm.ui.post.edit.PostEditActivity
+import com.github.dudgns0507.mvvm.ui.post.edit.PostEditBundle
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PostActivity : BaseActivity<ActivityPostBinding, PostBundle, PostViewModel>() {
+class PostActivity : BaseActivity<ActivityPostBinding, PostViewModel>() {
     override val layoutResId = R.layout.activity_post
     override val viewModel: PostViewModel by viewModels()
+    private var bundle: Post? = null
 
     private lateinit var dialog: Dialog
 
@@ -28,14 +32,15 @@ class PostActivity : BaseActivity<ActivityPostBinding, PostBundle, PostViewModel
     companion object {
         fun callingIntent(context: Context, post: Post): Intent {
             val intent = Intent(context, PostActivity::class.java)
-            intent.putExtra(BUNDLE_KEY, Gson().toJson(post))
+            intent.putExtra(BUNDLE_KEY, post)
             return intent
         }
     }
 
     override fun viewBinding() {
+        bundle = initBundle<Post>()
         binding.apply {
-            viewModel.bundle = Gson().fromJson(intent.getStringExtra(BUNDLE_KEY), Post::class.java)
+            viewModel.bundle = bundle
 
             commentAdapter = CommentAdapter()
             val layoutManager = LinearLayoutManager(this@PostActivity)
@@ -77,7 +82,7 @@ class PostActivity : BaseActivity<ActivityPostBinding, PostBundle, PostViewModel
             }
 
             observe(comments) {
-                commentAdapter.addAll(it)
+                commentAdapter.submitList(it)
             }
 
             observe(deletePost) {

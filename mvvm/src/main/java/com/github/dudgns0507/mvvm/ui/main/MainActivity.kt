@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<ActivityMainBinding, MainBundle, MainViewModel>() {
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override val layoutResId = R.layout.activity_main
     override val viewModel: MainViewModel by viewModels()
 

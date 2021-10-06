@@ -13,19 +13,21 @@ import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PostEditActivity : BaseActivity<ActivityPostEditBinding, PostEditBundle, PostEditViewModel>() {
+class PostEditActivity : BaseActivity<ActivityPostEditBinding, PostEditViewModel>() {
     override val layoutResId = R.layout.activity_post_edit
     override val viewModel: PostEditViewModel by viewModels()
+    private var bundle: Post? = null
 
     companion object {
         fun callingIntent(context: Context, post: Post): Intent {
             val intent = Intent(context, PostEditActivity::class.java)
-            intent.putExtra(BUNDLE_KEY, Gson().toJson(post))
+            intent.putExtra(BUNDLE_KEY, post)
             return intent
         }
     }
 
     override fun viewBinding() {
+        bundle = initBundle<Post>()
         binding.apply {
             bundle?.let {
                 etTitle.setText(it.title)

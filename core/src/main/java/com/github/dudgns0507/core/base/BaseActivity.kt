@@ -6,8 +6,10 @@ import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import kotlinx.parcelize.Parcelize
+import java.lang.Exception
 
-abstract class BaseActivity<T : ViewDataBinding, B : Parcelable, V : BaseViewModel> : AppCompatActivity() {
+abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : AppCompatActivity() {
     companion object {
         const val BUNDLE_KEY = "data"
         protected val TAG: String by lazy {
@@ -21,6 +23,11 @@ abstract class BaseActivity<T : ViewDataBinding, B : Parcelable, V : BaseViewMod
         }
     }
 
+    @Parcelize
+    data class DefaultBundle(
+        val t: String
+    ) : Parcelable
+
     private var _binding: T? = null
     val binding get() = _binding!!
 
@@ -29,10 +36,12 @@ abstract class BaseActivity<T : ViewDataBinding, B : Parcelable, V : BaseViewMod
 
     val ctx: Context by lazy { this }
 
-    val bundle: B? by lazy { initBundle() }
-
-    private fun initBundle(): B? {
-        return intent.getParcelableExtra(BUNDLE_KEY)
+    fun<B> initBundle(): B? {
+        return try {
+            intent.getParcelableExtra(BUNDLE_KEY)
+        } catch (e: Exception) {
+            null
+        }
     }
 
     abstract fun viewBinding()

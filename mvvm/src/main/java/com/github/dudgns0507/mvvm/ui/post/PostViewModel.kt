@@ -63,7 +63,7 @@ class PostViewModel @Inject constructor(
             .onStart {
                 // Loading
             }
-            .catch { e ->
+            .catch {
                 // Hide Loading
                 // Error Handling
             }
@@ -83,7 +83,7 @@ class PostViewModel @Inject constructor(
             .onStart {
                 // Loading
             }
-            .catch { e ->
+            .catch {
                 // Hide Loading
                 // Error Handling
             }

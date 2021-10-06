@@ -36,8 +36,6 @@ open class BaseViewModel(private val state: SavedStateHandle) : ViewModel() {
 
     private fun showGenericError(error: GenericError) {
         _genericError.postValue(error)
-        state.getLiveData<String>(TAG)
-        state["1"] = ""
     }
 
     fun <T : Any, E : Any> ResultWrapper<T, E>.getData(): ResultWrapper.Success<T>? {

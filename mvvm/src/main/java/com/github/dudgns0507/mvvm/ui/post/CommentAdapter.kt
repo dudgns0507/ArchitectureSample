@@ -2,13 +2,12 @@ package com.github.dudgns0507.mvvm.ui.post
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import com.github.dudgns0507.core.base.BaseListAdapter
+import com.github.dudgns0507.core.base.DiffCallback
 import com.github.dudgns0507.domain.dto.Comment
 import com.github.dudgns0507.mvvm.databinding.CommentItemBinding
 
-class CommentAdapter : RecyclerView.Adapter<CommentViewHolder>() {
-    private val comments = arrayListOf<Comment>()
-
+class CommentAdapter : BaseListAdapter<Comment, CommentViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
         return CommentViewHolder(
             CommentItemBinding.inflate(
@@ -20,16 +19,14 @@ class CommentAdapter : RecyclerView.Adapter<CommentViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
-        holder.bind(position, comments[position])
+        holder.bind(position, getItem(position))
     }
 
-    override fun getItemCount(): Int {
-        return comments.size
+    override fun isNewItem(oldItem: Comment, newItem: Comment): Boolean {
+        return oldItem.id == newItem.id
     }
 
-    fun addAll(c: List<Comment>) {
-        comments.clear()
-        comments.addAll(c)
-        notifyDataSetChanged()
+    override fun isNewContent(oldItem: Comment, newItem: Comment): Boolean {
+        return oldItem == newItem
     }
 }

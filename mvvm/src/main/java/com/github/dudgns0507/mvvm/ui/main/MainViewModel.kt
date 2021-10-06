@@ -61,7 +61,7 @@ class MainViewModel @Inject constructor(
                 .onStart {
                     // Loading
                 }
-                .catch { e ->
+                .catch {
                     // Hide Loading
                     // Error Handling
                 }
