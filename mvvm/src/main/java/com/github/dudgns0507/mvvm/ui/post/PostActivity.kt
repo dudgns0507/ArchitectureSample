@@ -82,7 +82,7 @@ class PostActivity : BaseActivity<ActivityPostBinding, PostViewModel>() {
             }
 
             observe(comments) {
-                commentAdapter.submitList(it)
+                commentAdapter.changeList(it)
             }
 
             observe(deletePost) {

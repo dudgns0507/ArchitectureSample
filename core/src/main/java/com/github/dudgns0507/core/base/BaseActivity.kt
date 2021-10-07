@@ -23,11 +23,6 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : AppCompatA
         }
     }
 
-    @Parcelize
-    data class DefaultBundle(
-        val t: String
-    ) : Parcelable
-
     private var _binding: T? = null
     val binding get() = _binding!!
 

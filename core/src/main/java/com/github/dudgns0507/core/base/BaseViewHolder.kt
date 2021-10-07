@@ -8,7 +8,3 @@ abstract class BaseViewHolder<T : ViewDataBinding, ITEM : Any>(
 ) : RecyclerView.ViewHolder(binding.root) {
     abstract fun bind(position: Int, item: ITEM)
 }
-
-interface OnItemClickListener<ITEM : Any> {
-    fun onItemClicked(position: Int, item: ITEM)
-}
