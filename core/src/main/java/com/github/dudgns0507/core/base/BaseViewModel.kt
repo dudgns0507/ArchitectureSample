@@ -4,18 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.github.dudgns0507.core.util.network.GenericError
-import com.github.dudgns0507.core.util.network.ResultWrapper
 import java.io.IOException
 
 open class BaseViewModel(private val state: SavedStateHandle) : ViewModel() {
-    private val TAG: String by lazy {
-        javaClass.simpleName.substring(javaClass.simpleName.lastIndexOf(".") + 1)
-            .replace("ViewModel", "VM")
+    companion object {
+        val TAG: String by lazy {
+            val name = this::class.java.simpleName
+            name.substring(name.lastIndexOf(".") + 1)
+                .replace("ViewModel", "VM")
+        }
     }
 
-    private val _genericError = MutableLiveData<GenericError>()
-    val genericError: LiveData<GenericError>
+    private val _genericError = MutableLiveData<String>()
+    val genericError: LiveData<String>
         get() = _genericError
 
     private val _netWorkError = MutableLiveData<String>()
@@ -34,23 +35,7 @@ open class BaseViewModel(private val state: SavedStateHandle) : ViewModel() {
         _netWorkError.postValue("NetWorkError")
     }
 
-    private fun showGenericError(error: GenericError) {
+    private fun showGenericError(error: String) {
         _genericError.postValue(error)
-    }
-
-    fun <T : Any, E : Any> ResultWrapper<T, E>.getData(): ResultWrapper.Success<T>? {
-        when (this) {
-            is ResultWrapper.NetworkError -> showNetworkError(this.error)
-            is ResultWrapper.ApiError -> {
-                this.error?.let {
-                    when(it) {
-                        is GenericError -> showGenericError(it)
-                    }
-                }
-            }
-            is ResultWrapper.UnknownError -> this.throwable?.let { showUnknownError(it) }
-            is ResultWrapper.Success<T> -> return this
-        }
-        return null
     }
 }
