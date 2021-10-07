@@ -1,6 +1,7 @@
 package com.github.dudgns0507.domain.repository
 
 import com.github.dudgns0507.core.util.network.Resource
+import com.github.dudgns0507.data.jsonplaceholder.model.response.ResPost
 import com.github.dudgns0507.domain.dto.Comment
 import com.github.dudgns0507.domain.dto.Post
 import kotlinx.coroutines.flow.Flow
@@ -25,7 +26,7 @@ interface DataRepository {
     fun requestPostsEx3(
         start: Int,
         limit: Int
-    ): Call<List<Post>>
+    ): Call<List<ResPost>>
 
     suspend fun requestPost(
         postId: Int

@@ -1,12 +1,15 @@
 package com.github.dudgns0507.data.jsonplaceholder
 
+import com.github.dudgns0507.core.util.ext.request
 import com.github.dudgns0507.core.util.network.Resource
 import com.github.dudgns0507.data.jsonplaceholder.model.request.ReqPostEdit
+import com.github.dudgns0507.data.jsonplaceholder.model.response.ResPost
 import com.github.dudgns0507.domain.dto.Comment
 import com.github.dudgns0507.domain.dto.Post
 import com.github.dudgns0507.domain.repository.DataRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import retrofit2.Call
 
 class DataRepositoryImpl(private val jsonService: JsonService) : DataRepository {
     /**
@@ -76,8 +79,8 @@ class DataRepositoryImpl(private val jsonService: JsonService) : DataRepository 
         return jsonService.requestPostsEx2(start, limit).map { it.toModel() }
     }
 
-    override fun requestPostsEx3(start: Int, limit: Int): List<Post> {
-        return jsonService.requestPostsEx3(start, limit).map { it.toModel() }
+    override fun requestPostsEx3(start: Int, limit: Int): Call<List<ResPost>> {
+        return jsonService.requestPostsEx3(start, limit)
     }
 
     override suspend fun requestPost(postId: Int): Flow<Resource<Post>> {

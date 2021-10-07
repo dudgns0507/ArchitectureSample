@@ -143,7 +143,7 @@ class MainViewModel @Inject constructor(
                 response.body()?.let { body ->
                     postStates.value.let {
                         _postStates.value = it.copy(
-                            posts = it.posts + body
+                            posts = it.posts + body.map { post -> post.toModel() }
                         )
                     }
                 }

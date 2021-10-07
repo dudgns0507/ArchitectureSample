@@ -1,6 +1,7 @@
 package com.github.dudgns0507.domain.usecase
 
 import com.github.dudgns0507.core.util.network.Resource
+import com.github.dudgns0507.data.jsonplaceholder.model.response.ResPost
 import com.github.dudgns0507.domain.dto.Post
 import com.github.dudgns0507.domain.repository.DataRepository
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +28,7 @@ class GetPostsUseCaseEx2(private val repository: DataRepository) {
 }
 
 class GetPostsUseCaseEx3(private val repository: DataRepository) {
-    operator fun invoke(start: Int, limit: Int): Call<List<Post>> {
+    operator fun invoke(start: Int, limit: Int): Call<List<ResPost>> {
         return repository.requestPostsEx3(start, limit)
     }
 }
