@@ -1,5 +1,7 @@
 package com.github.dudgns0507.mvvm.ui.activity.main
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.github.dudgns0507.core.base.BaseViewModel
@@ -19,6 +21,28 @@ class MainViewModel @Inject constructor(
 
     private val _postStates = MutableStateFlow(MainPostsState())
     val postStates: StateFlow<MainPostsState> = _postStates
+
+    private val _postData = MutableLiveData(MainPostsState())
+    val postData: LiveData<MainPostsState> = _postData
+
+    /**
+     * Use StateFlow
+     *
+     * you can use copy to update value
+     *
+     * _postStates.value = postStates.value.copy(
+     *      posts = emptyList()
+     * )
+     *
+     * Use LiveData
+     *
+     * you can use postValue to update value
+     * also '=' operator works too
+     *
+     * _postData.postValue(MainPostsState())
+     * _postData.value = MainPostsState()
+     *
+     */
 
     init {
         getPosts(0, 10)

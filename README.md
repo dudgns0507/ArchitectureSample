@@ -41,6 +41,9 @@ Example
     * DataRepositoryImpl.kt
     * GetPostsUseCase.kt
     * MainViewModel.kt
+* Observe Example (LiveData vs StateFlow)
+    * MainViewModel.kt
+    * MainActivity.kt
 
 
 License

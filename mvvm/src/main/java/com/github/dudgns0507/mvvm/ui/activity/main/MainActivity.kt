@@ -57,6 +57,34 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     private fun openDetail(item: Post) {
     }
 
+    /**
+     *
+     * StateFlow and LiveData is very similar.
+     * Also both are almost same position in architecture.
+     * So you can replace LiveData to StateFlow very easy.
+     *
+     * - Difference -
+     * StateFlow need default value but LiveData doesn't.
+     * LiveData is android library but StateFlow is kotlin library. So you can use in domain layer.
+     * StateFlow can use coroutine to get more performance.
+     * You can use StateFlow with other flow api.
+     *
+     * Observe StateFlow
+     *
+     * lifecycleScope.launchWhenCreated {
+     *      postStates.collect { it ->
+     *          update ui with it
+     *      }
+     * }
+     *
+     * Observe LiveData
+     *
+     * postData.observe(this, { it ->
+     *      update ui with it
+     * })
+     *
+     */
+
     override fun initObserve() {
         viewModel.apply {
             lifecycleScope.launchWhenCreated {
