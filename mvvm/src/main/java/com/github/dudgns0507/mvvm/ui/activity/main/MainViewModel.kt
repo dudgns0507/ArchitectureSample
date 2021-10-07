@@ -1,8 +1,9 @@
-package com.github.dudgns0507.mvvm.ui.main
+package com.github.dudgns0507.mvvm.ui.activity.main
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.github.dudgns0507.core.base.BaseViewModel
+import com.github.dudgns0507.core.util.ext.request
 import com.github.dudgns0507.core.util.network.Resource
 import com.github.dudgns0507.domain.usecase.JsonUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,16 +17,16 @@ class MainViewModel @Inject constructor(
     private val jsonUseCases: JsonUseCases
 ) : BaseViewModel(state) {
 
-    private val _postStates = MutableStateFlow(PostsState())
-    val postStates: StateFlow<PostsState> = _postStates
+    private val _postStates = MutableStateFlow(MainPostsState())
+    val postStates: StateFlow<MainPostsState> = _postStates
 
     init {
         getPosts(0, 10)
     }
 
-    fun onEvent(event: PostsEvent) {
+    fun onEvent(event: MainPostsEvent) {
         when(event) {
-            is PostsEvent.Read -> {
+            is MainPostsEvent.Read -> {
                 if(event.start == postStates.value.start &&
                     event.limit == postStates.value.limit
                 ) {
@@ -33,20 +34,20 @@ class MainViewModel @Inject constructor(
                 }
                 getPosts(event.start, event.limit)
             }
-            is PostsEvent.Patch -> viewModelScope.launch {
+            is MainPostsEvent.Patch -> viewModelScope.launch {
                 jsonUseCases.patchPostUseCase(event.postId, event.post)
             }
-            is PostsEvent.Delete -> viewModelScope.launch {
+            is MainPostsEvent.Delete -> viewModelScope.launch {
                 jsonUseCases.deletePostUseCase(event.postId)
             }
-            PostsEvent.ReadFirst -> {
+            MainPostsEvent.ReadFirst -> {
                 _postStates.value = postStates.value.copy(
                     posts = emptyList(),
                     start = 0
                 )
                 getPosts(postStates.value.start, postStates.value.limit)
             }
-            is PostsEvent.ReadMore -> {
+            is MainPostsEvent.ReadMore -> {
                 _postStates.value = postStates.value.copy(
                     start = postStates.value.start.plus(1)
                 )
@@ -81,5 +82,51 @@ class MainViewModel @Inject constructor(
                     }
                 }
         }
+    }
+
+    private fun getPostsEx1(start: Int, limit: Int) {
+        viewModelScope.launch {
+            when(val result = jsonUseCases.getPostsUseCaseEx1(start, limit)) {
+                is Resource.Success -> {
+                    postStates.value.let {
+                        _postStates.value = it.copy(
+                            posts = it.posts + result.data
+                        )
+                    }
+                }
+                is Resource.Failure -> TODO()
+            }
+        }
+    }
+
+    private fun getPostsEx2(start: Int, limit: Int) {
+        viewModelScope.launch {
+            val result = jsonUseCases.getPostsUseCaseEx2(start, limit)
+            postStates.value.let {
+                _postStates.value = it.copy(
+                    posts = it.posts + result
+                )
+            }
+        }
+    }
+
+    /**
+     * request(onResponse, onFailure) - extension method in core module
+     */
+    private fun getPostsEx3(start: Int, limit: Int) {
+        val result = jsonUseCases.getPostsUseCaseEx3(start, limit).request(
+            onResponse = { _, response ->
+                response.body()?.let { body ->
+                    postStates.value.let {
+                        _postStates.value = it.copy(
+                            posts = it.posts + body
+                        )
+                    }
+                }
+            },
+            onFailure = { _, _ ->
+
+            }
+        )
     }
 }

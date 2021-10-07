@@ -1,4 +1,4 @@
-package com.github.dudgns0507.mvvm.ui.main
+package com.github.dudgns0507.mvvm.ui.holder
 
 import com.github.dudgns0507.core.base.BaseViewHolder
 import com.github.dudgns0507.core.base.OnItemClickListener
