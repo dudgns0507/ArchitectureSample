@@ -1,4 +1,4 @@
-package com.github.dudgns0507.mvvm.ui.main
+package com.github.dudgns0507.mvvm.ui.activity.main
 
 import android.content.Context
 import android.content.Intent
@@ -11,12 +11,12 @@ import com.github.dudgns0507.core.base.OnItemClickListener
 import com.github.dudgns0507.domain.dto.Post
 import com.github.dudgns0507.mvvm.R
 import com.github.dudgns0507.mvvm.databinding.ActivityMainBinding
-import com.github.dudgns0507.mvvm.ui.post.PostActivity
+import com.github.dudgns0507.mvvm.ui.adapter.PostAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<ActivityMainBinding, MainBundle, MainViewModel>() {
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override val layoutResId = R.layout.activity_main
     override val viewModel: MainViewModel by viewModels()
 
@@ -28,7 +28,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainBundle, MainViewModel
         }
     }
 
-    override fun viewBinding() {
+    override fun initBinding() {
         binding.apply {
             postAdapter = PostAdapter().apply {
                 onItemClickListener = object : OnItemClickListener<Post> {
@@ -47,7 +47,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainBundle, MainViewModel
                     super.onScrolled(recyclerView, dx, dy)
                     val lastVisibleItem = layoutManager.findLastCompletelyVisibleItemPosition()
                     if (layoutManager.itemCount <= lastVisibleItem + 2) {
-                        viewModel.onEvent(PostsEvent.ReadMore)
+                        viewModel.onEvent(MainPostsEvent.ReadMore)
                     }
                 }
             })
@@ -55,10 +55,37 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainBundle, MainViewModel
     }
 
     private fun openDetail(item: Post) {
-        startActivity(PostActivity.callingIntent(this, item))
     }
 
-    override fun registObserve() {
+    /**
+     *
+     * StateFlow and LiveData is very similar.
+     * Also both are almost same position in architecture.
+     * So you can replace LiveData to StateFlow very easy.
+     *
+     * - Difference -
+     * StateFlow need default value but LiveData doesn't.
+     * LiveData is android library but StateFlow is kotlin library. So you can use in domain layer.
+     * StateFlow can use coroutine to get more performance.
+     * You can use StateFlow with other flow api.
+     *
+     * Observe StateFlow
+     *
+     * lifecycleScope.launchWhenCreated {
+     *      postStates.collect { it ->
+     *          update ui with it
+     *      }
+     * }
+     *
+     * Observe LiveData
+     *
+     * postData.observe(this, { it ->
+     *      update ui with it
+     * })
+     *
+     */
+
+    override fun initObserve() {
         viewModel.apply {
             lifecycleScope.launchWhenCreated {
                 postStates.collect { state ->
@@ -68,12 +95,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainBundle, MainViewModel
         }
     }
 
-    override fun loadData() {
+    override fun afterBinding() {
     }
 
     override fun onResume() {
         super.onResume()
 
-        viewModel.onEvent(PostsEvent.ReadFirst)
+        viewModel.onEvent(MainPostsEvent.ReadFirst)
     }
 }

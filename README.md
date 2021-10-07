@@ -31,6 +31,20 @@
 * Lint
     * [Ktlint](https://github.com/pinterest/ktlint)
     * [Detekt](https://github.com/arturbosch/detekt#with-gradle)
+    
+Example
+-------
+
+* Retrofit Example
+    * JsonService.kt
+    * DataRepository.kt
+    * DataRepositoryImpl.kt
+    * GetPostsUseCase.kt
+    * MainViewModel.kt
+* Observe Example (LiveData vs StateFlow)
+    * MainViewModel.kt
+    * MainActivity.kt
+
 
 License
 -------

@@ -31,6 +31,9 @@ class AppModule {
     fun provideJsonUseCases(repository: DataRepository): JsonUseCases {
         return JsonUseCases(
             getPostsUseCase = GetPostsUseCase(repository),
+            getPostsUseCaseEx1 = GetPostsUseCaseEx1(repository),
+            getPostsUseCaseEx2 = GetPostsUseCaseEx2(repository),
+            getPostsUseCaseEx3 = GetPostsUseCaseEx3(repository),
             getPostUseCase = GetPostUseCase(repository),
             getCommentsUseCase = GetCommentsUseCase(repository),
             patchPostUseCase = PatchPostUseCase(repository),

@@ -2,12 +2,12 @@ package com.github.dudgns0507.core.base
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import java.lang.Exception
 
-abstract class BaseActivity<T : ViewDataBinding, B : Parcelable, V : BaseViewModel> : AppCompatActivity() {
+abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : AppCompatActivity() {
     companion object {
         const val BUNDLE_KEY = "data"
         protected val TAG: String by lazy {
@@ -29,15 +29,23 @@ abstract class BaseActivity<T : ViewDataBinding, B : Parcelable, V : BaseViewMod
 
     val ctx: Context by lazy { this }
 
-    val bundle: B? by lazy { initBundle() }
-
-    private fun initBundle(): B? {
-        return intent.getParcelableExtra(BUNDLE_KEY)
+    fun<B> initBundle(): B? {
+        return try {
+            intent.getParcelableExtra(BUNDLE_KEY)
+        } catch (e: Exception) {
+            null
+        }
     }
 
-    abstract fun viewBinding()
-    abstract fun registObserve()
-    abstract fun loadData()
+    /**
+     * initBinding - For view initialize
+     * initObserve - Set Observe for liveData or stateFlow
+     * afterBinding - After view binding ex. loading data with viewModel
+     */
+
+    abstract fun initBinding()
+    abstract fun initObserve()
+    abstract fun afterBinding()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,10 +58,10 @@ abstract class BaseActivity<T : ViewDataBinding, B : Parcelable, V : BaseViewMod
         binding.apply {
             lifecycleOwner = this@BaseActivity
 
-            viewBinding()
+            initBinding()
         }
-        registObserve()
-        loadData()
+        initObserve()
+        afterBinding()
     }
 
     override fun onDestroy() {

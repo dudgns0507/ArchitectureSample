@@ -48,3 +48,18 @@ fun <T> Call<T>.asCallbackFLow() = callbackFlow<T> {
 
     awaitClose()
 }
+
+fun<T> Call<T>.request(
+    onResponse: (call: Call<T>, response: Response<T>) -> Unit,
+    onFailure: (call: Call<T>, t: Throwable) -> Unit
+) {
+    this.enqueue(object : Callback<T> {
+        override fun onResponse(call: Call<T>, response: Response<T>) {
+            onResponse(call, response)
+        }
+
+        override fun onFailure(call: Call<T>, t: Throwable) {
+            onFailure(call, t)
+        }
+    })
+}

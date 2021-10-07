@@ -26,7 +26,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     val binding get() = _binding!!
 
     lateinit var act: AppCompatActivity
-    lateinit var baseAct: BaseActivity<*, *, *>
+    lateinit var baseAct: BaseActivity<*, *>
 
     abstract val layoutResId: Int
     abstract val viewModel: BaseViewModel
@@ -40,7 +40,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         act = requireActivity() as AppCompatActivity
 
         try {
-            baseAct = requireActivity() as BaseActivity<*, *, *>
+            baseAct = requireActivity() as BaseActivity<*, *>
         } catch (e: Exception) {
             
         }
