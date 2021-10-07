@@ -7,10 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.github.dudgns0507.core.base.BaseViewModel
 import com.github.dudgns0507.core.util.ext.request
 import com.github.dudgns0507.core.util.network.Resource
+import com.github.dudgns0507.data.jsonplaceholder.model.response.ResPost
 import com.github.dudgns0507.domain.usecase.JsonUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import retrofit2.Call
 import javax.inject.Inject
 
 @HiltViewModel
@@ -138,12 +140,13 @@ class MainViewModel @Inject constructor(
      * request(onResponse, onFailure) - extension method in core module
      */
     private fun getPostsEx3(start: Int, limit: Int) {
-        val result = jsonUseCases.getPostsUseCaseEx3(start, limit).request(
+        val call = jsonUseCases.getPostsUseCaseEx3(start, limit)
+        call.request(
             onResponse = { _, response ->
                 response.body()?.let { body ->
                     postStates.value.let {
                         _postStates.value = it.copy(
-                            posts = it.posts + body.map { post -> post.toModel() }
+                            posts = it.posts + body
                         )
                     }
                 }

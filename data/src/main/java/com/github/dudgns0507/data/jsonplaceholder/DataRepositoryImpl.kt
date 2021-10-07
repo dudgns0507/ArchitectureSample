@@ -79,7 +79,7 @@ class DataRepositoryImpl(private val jsonService: JsonService) : DataRepository 
         return jsonService.requestPostsEx2(start, limit).map { it.toModel() }
     }
 
-    override fun requestPostsEx3(start: Int, limit: Int): Call<List<ResPost>> {
+    override fun requestPostsEx3(start: Int, limit: Int): Call<List<Post>> {
         return jsonService.requestPostsEx3(start, limit)
     }
 
