@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseDiffAdapter<T : Any, V : RecyclerView.ViewHolder> :
-    RecyclerView.Adapter<V>(), DiffCallBack<T> {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>(), DiffCallBack<T> {
 
     private val adapter: BaseDiffAdapter<T, V> by lazy { this }
     var asyncDiffer = AsyncListDiffer(adapter, object : DiffUtil.ItemCallback<T>() {

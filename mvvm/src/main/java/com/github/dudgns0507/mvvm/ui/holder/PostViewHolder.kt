@@ -15,7 +15,7 @@ class PostViewHolder(
             listener.onItemClicked(position, item)
         }
 
-        tvTitle.text = item.title
+        tvTitle.text = "${item.id}. ${item.title}"
         tvDescription.text = item.body
     }
 }

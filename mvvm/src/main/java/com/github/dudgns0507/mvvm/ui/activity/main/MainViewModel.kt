@@ -9,6 +9,7 @@ import com.github.dudgns0507.core.util.ext.request
 import com.github.dudgns0507.core.util.network.Resource
 import com.github.dudgns0507.domain.usecase.JsonUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,6 +20,7 @@ class MainViewModel @Inject constructor(
     private val jsonUseCases: JsonUseCases
 ) : BaseViewModel(state) {
 
+    private var getPostsJob: Job? = null
     private val _postStates = MutableStateFlow(MainPostsState())
     val postStates: StateFlow<MainPostsState> = _postStates
 
@@ -74,7 +76,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun getPosts(start: Int, limit: Int, isFirstLoad: Boolean = false) {
-        viewModelScope.launch {
+        getPostsJob = viewModelScope.launch {
             jsonUseCases.getPostsUseCase(start, limit)
                 .onStart {
                     // Loading

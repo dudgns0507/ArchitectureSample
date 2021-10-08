@@ -46,9 +46,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             rvPost.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    val lastVisibleItem = layoutManager.findLastCompletelyVisibleItemPosition()
-                    if (layoutManager.itemCount <= lastVisibleItem + 2) {
-                        viewModel.onEvent(MainPostsEvent.ReadMore)
+                    if (!rvPost.canScrollVertically(1)) {
+                        val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
+                        val itemTotalCount = recyclerView.adapter!!.itemCount - 1
+
+                        if (lastVisibleItemPosition == itemTotalCount) {
+                            postAdapter.finishLoading()
+                            viewModel.onEvent(MainPostsEvent.ReadMore)
+                        }
                     }
                 }
             })
@@ -90,7 +95,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         viewModel.apply {
             lifecycleScope.launchWhenCreated {
                 postStates.collect { state ->
-                    postAdapter.updateList(state.posts)
+                    if(state.posts.size > postAdapter.listSize) {
+                        postAdapter.updateList(state.posts)
+                        postAdapter.showLoading()
+                    }
                 }
             }
         }
