@@ -77,7 +77,6 @@ class NetworkModule {
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(Constant.url)
-            .addCallAdapterFactory(SafeCallAdapterFactory())
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
     }
