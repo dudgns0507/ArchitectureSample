@@ -24,15 +24,16 @@ import com.github.dudgns0507.mvvm.ui.holder.PostViewHolder
  *
  * BaseDiffAdapter
  *
+ * DiffUtil only refreshes modified data.
  * Use DiffUtil to increase loading performance.
- * Refresh only changed data.
+ * 
  *
- * Default method is same with BaseAdapter.
+ * Default methods are identical to BaseAdapter's.
  *
  * isNewItem(oldItem: T, newItem: T): Boolean
  * isNewContent(oldItem: T, newItem: T): Boolean
  *
- * You should override two method for using DiffUtil
+ * The above two methods must be overridden for DiffUtil to function.
  *
  */
 
@@ -47,7 +48,7 @@ class PostAdapter : BaseDiffAdapter<Post, PostViewHolder>() {
     val listSize get() = super.getItemCount()
 
     /**
-     * You can use multiple ViewHolder with ViewType
+     * You can use multiple ViewHolders with ViewType
      * Define condition in getItemViewType ex. item id or position
      *
      * I create loading view and put in last position

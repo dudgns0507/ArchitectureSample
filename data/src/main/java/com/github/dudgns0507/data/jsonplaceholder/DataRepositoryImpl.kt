@@ -15,11 +15,11 @@ class DataRepositoryImpl(private val jsonService: JsonService) : DataRepository 
     /**
      * Retrofit with Flow & Response Example
      *
-     * Use sealed class 'Resource' to recognize state of response
+     * Use sealed class 'Resource' to determine the state of a response.
      *
-     * Resource.Loading - means start request. you can add some ui like progressbar to wait response
-     * Resource.Success - means receive success and body isn't null or empty
-     * Resource.Failure - means fail to receive data from server send throwable to find error type
+     * Resource.Loading - means "request started". You may display a progressbar while waiting for response.
+     * Resource.Success - means "receive success" and body isn't null or empty.
+     * Resource.Failure - means "failed to receive data from server". Send a Throwable here to handle Errors.
      */
     override suspend fun requestPosts(start: Int, limit: Int): Flow<Resource<List<Post>>> {
         return flow {
@@ -43,12 +43,12 @@ class DataRepositoryImpl(private val jsonService: JsonService) : DataRepository 
     /**
      * Retrofit with Response Example
      *
-     * Use sealed class 'Resource' to recognize state of response
-     * You can detect success or failure.
-     * Can't emit Loading type like flow.
+     * Use sealed class 'Resource' to determine the state of a response.
+     * You can determine success or failure of a response.
+     * Loading type is not supported. Use Flow if you need Loading type.
      *
-     * Resource.Success - means receive success and body isn't null or empty
-     * Resource.Failure - means fail to receive data from server send throwable to find error type
+     * Resource.Success - means "receive success" and body isn't null or empty.
+     * Resource.Failure - means "failed to receive data from server". Send a Throwable here to handle Errors.
      */
 
     override suspend fun requestPostsEx1(start: Int, limit: Int): Resource<List<Post>> {
@@ -70,9 +70,9 @@ class DataRepositoryImpl(private val jsonService: JsonService) : DataRepository 
     /**
      * Retrofit with suspend Example
      *
-     * You can receive just body data.
-     * It is simple way to use but hard to detect error handling
-     * If additionally need header data recommend to use Response or Call class
+     * You can receive body data only.
+     * It is simple to use, but tricky to handle errors.
+     * If header data is required, using Response or Call class instead is recommended.
      */
 
     override suspend fun requestPostsEx2(start: Int, limit: Int): List<Post> {
