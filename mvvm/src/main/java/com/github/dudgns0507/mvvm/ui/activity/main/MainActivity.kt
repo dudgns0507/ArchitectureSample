@@ -2,6 +2,7 @@ package com.github.dudgns0507.mvvm.ui.activity.main
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -89,18 +90,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         viewModel.apply {
             lifecycleScope.launchWhenCreated {
                 postStates.collect { state ->
-                    postAdapter.addAll(state.posts)
+                    postAdapter.updateList(state.posts)
                 }
             }
         }
     }
 
     override fun afterBinding() {
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        viewModel.onEvent(MainPostsEvent.ReadFirst)
     }
 }

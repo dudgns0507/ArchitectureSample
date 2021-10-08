@@ -11,4 +11,4 @@ data class Post(
     val body: String = ""
 ) : Parcelable
 
-class InvalidPostException(code: Int, message: String): Exception()
+class InvalidPostException(code: Int, message: String) : Exception()

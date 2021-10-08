@@ -22,11 +22,19 @@ abstract class BaseDiffAdapter<T : Any, V : RecyclerView.ViewHolder> :
         return asyncDiffer.currentList.size
     }
 
-    fun changeList(list: List<T>) {
+    fun getItem(position: Int): T {
+        return asyncDiffer.currentList[position]
+    }
+
+    fun updateList(list: List<T>) {
         asyncDiffer.submitList(list)
     }
 
     fun addList(list: List<T>) {
         asyncDiffer.submitList(asyncDiffer.currentList + list)
+    }
+
+    fun clearList() {
+        asyncDiffer.submitList(emptyList())
     }
 }

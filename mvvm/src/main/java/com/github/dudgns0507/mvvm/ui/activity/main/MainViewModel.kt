@@ -7,12 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.github.dudgns0507.core.base.BaseViewModel
 import com.github.dudgns0507.core.util.ext.request
 import com.github.dudgns0507.core.util.network.Resource
-import com.github.dudgns0507.data.jsonplaceholder.model.response.ResPost
 import com.github.dudgns0507.domain.usecase.JsonUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import retrofit2.Call
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,7 +45,7 @@ class MainViewModel @Inject constructor(
      */
 
     init {
-        getPosts(0, 10)
+        onEvent(MainPostsEvent.ReadFirst)
     }
 
     fun onEvent(event: MainPostsEvent) {
@@ -67,22 +65,15 @@ class MainViewModel @Inject constructor(
                 jsonUseCases.deletePostUseCase(event.postId)
             }
             MainPostsEvent.ReadFirst -> {
-                _postStates.value = postStates.value.copy(
-                    posts = emptyList(),
-                    start = 0
-                )
-                getPosts(postStates.value.start, postStates.value.limit)
+                getPosts(0, postStates.value.limit)
             }
             is MainPostsEvent.ReadMore -> {
-                _postStates.value = postStates.value.copy(
-                    start = postStates.value.start.plus(1)
-                )
-                getPosts(postStates.value.start, postStates.value.limit)
+                getPosts(postStates.value.start + 10, postStates.value.limit)
             }
         }
     }
 
-    private fun getPosts(start: Int, limit: Int) {
+    private fun getPosts(start: Int, limit: Int, isFirstLoad: Boolean = false) {
         viewModelScope.launch {
             jsonUseCases.getPostsUseCase(start, limit)
                 .onStart {
@@ -98,13 +89,26 @@ class MainViewModel @Inject constructor(
                     when(result) {
                         is Resource.Success -> {
                             postStates.value.let {
-                                _postStates.value = it.copy(
-                                    posts = it.posts + result.data
-                                )
+                                if(result.data.isNotEmpty()) {
+                                    when (isFirstLoad) {
+                                        true -> _postStates.value = it.copy(
+                                            posts = result.data,
+                                            start = start,
+                                            limit = limit
+                                        )
+                                        false -> _postStates.value = it.copy(
+                                            posts = it.posts + result.data,
+                                            start = start,
+                                            limit = limit
+                                        )
+                                    }
+                                }
                             }
                         }
-                        is Resource.Failure -> TODO()
-                        is Resource.Loading -> TODO()
+                        is Resource.Failure -> {
+                        }
+                        is Resource.Loading -> {
+                        }
                     }
                 }
         }
