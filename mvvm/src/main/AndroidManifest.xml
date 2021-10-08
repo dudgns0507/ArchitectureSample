@@ -14,6 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ArchitectureSample">
         <activity
+            android:name=".ui.compose.ComposeMainActivity"
+            android:exported="true"
+            android:label="@string/title_activity_compose_main"
+            android:theme="@style/Theme.ArchitectureSample.NoActionBar" />
+        <activity
             android:name=".ui.activity.samle_list.SampleListActivity"
             android:exported="true" />
         <activity
