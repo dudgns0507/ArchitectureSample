@@ -42,7 +42,7 @@ class PostAdapter : BaseDiffAdapter<Post, PostViewHolder>() {
         private const val LOADING_VIEW = 1
     }
 
-    private var isLoading = 0
+    private var isLoading = false
     lateinit var onItemClickListener: OnItemClickListener<Post>
     val listSize get() = super.getItemCount()
 
@@ -54,15 +54,15 @@ class PostAdapter : BaseDiffAdapter<Post, PostViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return super.getItemCount() + isLoading
+        return super.getItemCount() + 1
     }
 
     fun showLoading() {
-        isLoading = 1
+        isLoading = true
     }
 
     fun hideLoading() {
-        isLoading = 0
+        isLoading = false
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -91,7 +91,7 @@ class PostAdapter : BaseDiffAdapter<Post, PostViewHolder>() {
                 holder.bind(position, getItem(position))
             }
             is LoadingViewHolder -> {
-                holder.bind(position, "")
+                holder.bind(position, isLoading)
             }
         }
     }

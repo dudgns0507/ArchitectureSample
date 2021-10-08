@@ -66,7 +66,7 @@ class MainViewModel @Inject constructor(
             is MainPostsEvent.Delete -> viewModelScope.launch {
                 jsonUseCases.deletePostUseCase(event.postId)
             }
-            MainPostsEvent.ReadFirst -> {
+            is MainPostsEvent.ReadFirst -> {
                 getPosts(0, postStates.value.limit)
             }
             is MainPostsEvent.ReadMore -> {
@@ -104,6 +104,10 @@ class MainViewModel @Inject constructor(
                                             limit = limit
                                         )
                                     }
+                                } else {
+                                    _postStates.value = postStates.value.copy(
+                                        isLoadFinish = true
+                                    )
                                 }
                             }
                         }

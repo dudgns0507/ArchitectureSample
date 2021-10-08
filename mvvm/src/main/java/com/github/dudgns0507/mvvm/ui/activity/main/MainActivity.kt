@@ -99,6 +99,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                         postAdapter.updateList(state.posts)
                         postAdapter.showLoading()
                     }
+
+                    if(state.isLoadFinish) {
+                        postAdapter.hideLoading()
+                    }
                 }
             }
         }
