@@ -48,7 +48,7 @@ class PostAdapter : BaseDiffAdapter<Post, PostViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
         return when {
-            position < itemCount -> POST_VIEW
+            position < listSize -> POST_VIEW
             else -> LOADING_VIEW
         }
     }

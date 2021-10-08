@@ -51,7 +51,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                         val itemTotalCount = recyclerView.adapter!!.itemCount - 1
 
                         if (lastVisibleItemPosition == itemTotalCount) {
-                            postAdapter.finishLoading()
+                            postAdapter.hideLoading()
                             viewModel.onEvent(MainPostsEvent.ReadMore)
                         }
                     }
