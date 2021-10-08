@@ -44,6 +44,8 @@ Example
 * Observe Example (LiveData vs StateFlow)
     * MainViewModel.kt
     * MainActivity.kt
+* DiffUtil Example
+    * PostAdapter.kt
 
 
 License
