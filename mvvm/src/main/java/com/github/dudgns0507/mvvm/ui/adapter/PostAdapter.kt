@@ -46,6 +46,13 @@ class PostAdapter : BaseDiffAdapter<Post, PostViewHolder>() {
     lateinit var onItemClickListener: OnItemClickListener<Post>
     val listSize get() = super.getItemCount()
 
+    /**
+     * You can use multiple ViewHolder with ViewType
+     * Define condition in getItemViewType ex. item id or position
+     *
+     * I create loading view and put in last position
+     */
+
     override fun getItemViewType(position: Int): Int {
         return when {
             position < listSize -> POST_VIEW
