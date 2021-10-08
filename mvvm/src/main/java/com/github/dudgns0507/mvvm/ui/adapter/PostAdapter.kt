@@ -59,10 +59,12 @@ class PostAdapter : BaseDiffAdapter<Post, PostViewHolder>() {
 
     fun showLoading() {
         isLoading = true
+        notifyItemChanged(itemCount - 1)
     }
 
     fun hideLoading() {
         isLoading = false
+        notifyItemChanged(itemCount - 1)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

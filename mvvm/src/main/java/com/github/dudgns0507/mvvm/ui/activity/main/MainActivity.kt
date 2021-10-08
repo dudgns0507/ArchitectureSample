@@ -95,13 +95,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         viewModel.apply {
             lifecycleScope.launchWhenCreated {
                 postStates.collect { state ->
+                    Log.w("Debug", "start : ${state.start}, isLoadFinish : ${state.isLoadFinish}")
                     if(state.posts.size > postAdapter.listSize) {
                         postAdapter.updateList(state.posts)
-                        postAdapter.showLoading()
-                    }
-
-                    if(state.isLoadFinish) {
-                        postAdapter.hideLoading()
+                        if(state.isLoadFinish) {
+                            postAdapter.hideLoading()
+                        } else {
+                            postAdapter.showLoading()
+                        }
                     }
                 }
             }

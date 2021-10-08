@@ -5,11 +5,13 @@
     <RelativeLayout
         android:id="@+id/rl_loading_item"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="wrap_content">
         <ProgressBar
             android:id="@+id/pb_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="40dp"
             android:layout_centerInParent="true" />
     </RelativeLayout>
 </layout>

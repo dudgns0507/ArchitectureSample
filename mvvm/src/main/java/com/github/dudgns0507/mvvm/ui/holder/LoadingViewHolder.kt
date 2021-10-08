@@ -11,8 +11,8 @@ class LoadingViewHolder(
 
     override fun bind(position: Int, item: Boolean) {
         when(item) {
-            true -> binding.rlLoadingItem.visible()
-            false -> binding.rlLoadingItem.gone()
+            true -> binding.pbLoading.visible()
+            false -> binding.pbLoading.gone()
         }
     }
 }
