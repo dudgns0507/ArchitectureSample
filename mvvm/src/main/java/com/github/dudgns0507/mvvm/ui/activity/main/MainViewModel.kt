@@ -28,9 +28,7 @@ class MainViewModel @Inject constructor(
     val postData: LiveData<MainPostsState> = _postData
 
     /**
-     * Use StateFlow
-     *
-     * you can use copy to update value
+     * Use copy to update value when using StateFlow
      *
      * _postStates.value = postStates.value.copy(
      *      posts = emptyList()
@@ -38,8 +36,8 @@ class MainViewModel @Inject constructor(
      *
      * Use LiveData
      *
-     * you can use postValue to update value
-     * also '=' operator works too
+     * Use postValue to update value when using LiveData.
+     * '=' operator works also.
      *
      * _postData.postValue(MainPostsState())
      * _postData.value = MainPostsState()
