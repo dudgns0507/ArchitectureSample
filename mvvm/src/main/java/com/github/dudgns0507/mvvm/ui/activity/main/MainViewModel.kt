@@ -67,7 +67,7 @@ class MainViewModel @Inject constructor(
                 jsonUseCases.deletePostUseCase(event.postId)
             }
             is MainPostsEvent.ReadFirst -> {
-                getPosts(0, postStates.value.limit)
+                getPosts(0, postStates.value.limit, isFirstLoad = true)
             }
             is MainPostsEvent.ReadMore -> {
                 getPosts(postStates.value.start + 10, postStates.value.limit)
