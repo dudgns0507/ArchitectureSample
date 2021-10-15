@@ -53,10 +53,6 @@ class SampleAdapter : BaseAdapter<Type, RecyclerView.ViewHolder>() {
         }
     }
 
-    override fun getItemCount(): Int {
-        return super.getItemCount() + 1
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             A_VIEW -> AAViewHolder(
