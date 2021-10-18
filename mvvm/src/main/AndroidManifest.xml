@@ -14,16 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ArchitectureSample">
         <activity
-            android:name=".ui.compose.ComposeMainActivity"
-            android:exported="true"
-            android:label="@string/title_activity_compose_main"
-            android:theme="@style/Theme.ArchitectureSample.NoActionBar" />
-        <activity
-            android:name=".ui.activity.samle_list.SampleListActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ui.activity.main.MainActivity"
-            android:exported="true">
+            android:name=".ui.activity.sample.SampleActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,11 +23,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.post.PostActivity"
+            android:name=".ui.activity.navigation.NavigationActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.post.edit.PostEditActivity"
-            android:exported="false" />
+            android:name=".ui.activity.posts.PostsActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".ui.compose.ComposeMainActivity"
+            android:exported="true"
+            android:label="@string/title_activity_compose_main"
+            android:theme="@style/Theme.ArchitectureSample.NoActionBar" />
     </application>
 
 </manifest>

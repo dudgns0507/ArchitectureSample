@@ -1,4 +1,4 @@
-package com.github.dudgns0507.mvvm.ui.activity.main
+package com.github.dudgns0507.mvvm.ui.activity.posts
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,17 +15,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class PostsViewModel @Inject constructor(
     state: SavedStateHandle,
     private val jsonUseCases: JsonUseCases
 ) : BaseViewModel(state) {
 
     private var getPostsJob: Job? = null
-    private val _postStates = MutableStateFlow(MainPostsState())
-    val postStates: StateFlow<MainPostsState> = _postStates
+    private val _postStates = MutableStateFlow(PostsState())
+    val postStates: StateFlow<PostsState> = _postStates
 
-    private val _postData = MutableLiveData(MainPostsState())
-    val postData: LiveData<MainPostsState> = _postData
+    private val _postData = MutableLiveData(PostsState())
+    val postData: LiveData<PostsState> = _postData
 
     /**
      * Use copy to update value when using StateFlow
@@ -45,12 +45,12 @@ class MainViewModel @Inject constructor(
      */
 
     init {
-        onEvent(MainPostsEvent.ReadFirst)
+        onEvent(PostsEvent.ReadFirst)
     }
 
-    fun onEvent(event: MainPostsEvent) {
+    fun onEvent(event: PostsEvent) {
         when(event) {
-            is MainPostsEvent.Read -> {
+            is PostsEvent.Read -> {
                 if(event.start == postStates.value.start &&
                     event.limit == postStates.value.limit
                 ) {
@@ -58,16 +58,16 @@ class MainViewModel @Inject constructor(
                 }
                 getPosts(event.start, event.limit)
             }
-            is MainPostsEvent.Patch -> viewModelScope.launch {
+            is PostsEvent.Patch -> viewModelScope.launch {
                 jsonUseCases.patchPostUseCase(event.postId, event.post)
             }
-            is MainPostsEvent.Delete -> viewModelScope.launch {
+            is PostsEvent.Delete -> viewModelScope.launch {
                 jsonUseCases.deletePostUseCase(event.postId)
             }
-            is MainPostsEvent.ReadFirst -> {
+            is PostsEvent.ReadFirst -> {
                 getPosts(0, postStates.value.limit, isFirstLoad = true)
             }
-            is MainPostsEvent.ReadMore -> {
+            is PostsEvent.ReadMore -> {
                 getPosts(postStates.value.start + 10, postStates.value.limit)
             }
         }

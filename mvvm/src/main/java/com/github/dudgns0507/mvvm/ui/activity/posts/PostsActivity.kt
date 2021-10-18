@@ -1,4 +1,4 @@
-package com.github.dudgns0507.mvvm.ui.activity.main
+package com.github.dudgns0507.mvvm.ui.activity.posts
 
 import android.content.Context
 import android.content.Intent
@@ -17,15 +17,15 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
+class PostsActivity : BaseActivity<ActivityMainBinding, PostsViewModel>() {
     override val layoutResId = R.layout.activity_main
-    override val viewModel: MainViewModel by viewModels()
+    override val viewModel: PostsViewModel by viewModels()
 
     private lateinit var postAdapter: PostAdapter
 
     companion object {
         fun callingIntent(context: Context): Intent {
-            return Intent(context, MainActivity::class.java)
+            return Intent(context, PostsActivity::class.java)
         }
     }
 
@@ -39,7 +39,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 }
             }
 
-            val layoutManager = LinearLayoutManager(this@MainActivity)
+            val layoutManager = LinearLayoutManager(this@PostsActivity)
             rvPost.layoutManager = layoutManager
             rvPost.setHasFixedSize(true)
             rvPost.adapter = postAdapter
@@ -52,7 +52,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
                         if (lastVisibleItemPosition == itemTotalCount) {
                             postAdapter.hideLoading()
-                            viewModel.onEvent(MainPostsEvent.ReadMore)
+                            viewModel.onEvent(PostsEvent.ReadMore)
                         }
                     }
                 }
