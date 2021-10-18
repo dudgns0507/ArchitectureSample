@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@layout/fragment_first"
     android:id="@+id/sample_nav_graph">
+
+    <fragment
+        android:id="@+id/firstFragment"
+        android:name="com.github.dudgns0507.mvvm.ui.fragment.first.FirstFragment"
+        android:label="First"
+        tools:layout="@layout/fragment_first" />
 
 </navigation>

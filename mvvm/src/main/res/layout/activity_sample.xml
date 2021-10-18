@@ -5,7 +5,22 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="16dp"
         tools:context=".ui.activity.sample.SampleActivity">
+
+        <Button
+            android:id="@+id/btn_posts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_post_list"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_navigation"
+            app:layout_constraintTop_toBottomOf="@id/btn_posts" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

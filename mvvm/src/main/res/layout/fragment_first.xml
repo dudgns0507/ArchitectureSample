@@ -5,13 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.activity.navigation.NavigationActivity">
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fcv_navigation"
-            app:navGraph="@navigation/sample_nav_graph"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+        tools:context=".ui.fragment.first.FirstFragment">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
