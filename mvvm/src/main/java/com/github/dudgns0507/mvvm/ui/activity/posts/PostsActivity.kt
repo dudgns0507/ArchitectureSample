@@ -2,6 +2,7 @@ package com.github.dudgns0507.mvvm.ui.activity.posts
 
 import android.content.Context
 import android.content.Intent
+import android.os.Parcelable
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -11,14 +12,15 @@ import com.github.dudgns0507.core.base.BaseActivity
 import com.github.dudgns0507.core.base.OnItemClickListener
 import com.github.dudgns0507.domain.dto.Post
 import com.github.dudgns0507.mvvm.R
-import com.github.dudgns0507.mvvm.databinding.ActivityMainBinding
+import com.github.dudgns0507.mvvm.databinding.ActivityPostsBinding
 import com.github.dudgns0507.mvvm.ui.adapter.PostAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
+
 @AndroidEntryPoint
-class PostsActivity : BaseActivity<ActivityMainBinding, PostsViewModel>() {
-    override val layoutResId = R.layout.activity_main
+class PostsActivity : BaseActivity<ActivityPostsBinding, PostsViewModel>() {
+    override val layoutResId = R.layout.activity_posts
     override val viewModel: PostsViewModel by viewModels()
 
     private lateinit var postAdapter: PostAdapter
@@ -47,7 +49,8 @@ class PostsActivity : BaseActivity<ActivityMainBinding, PostsViewModel>() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     if (!rvPost.canScrollVertically(1)) {
-                        val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
+                        val lastVisibleItemPosition =
+                            (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
                         val itemTotalCount = recyclerView.adapter!!.itemCount - 1
 
                         if (lastVisibleItemPosition == itemTotalCount) {
@@ -94,10 +97,12 @@ class PostsActivity : BaseActivity<ActivityMainBinding, PostsViewModel>() {
         viewModel.apply {
             lifecycleScope.launchWhenCreated {
                 postStates.collect { state ->
-                    Log.w("Debug", "start : ${state.start}, isLoadFinish : ${state.isLoadFinish}")
-                    if(state.posts.size > postAdapter.listSize) {
+                    if (state.posts.size > postAdapter.listSize) {
+                        val recyclerViewState: Parcelable? =
+                            binding.rvPost.layoutManager?.onSaveInstanceState()
                         postAdapter.updateList(state.posts)
-                        if(state.isLoadFinish) {
+                        binding.rvPost.layoutManager?.onRestoreInstanceState(recyclerViewState)
+                        if (state.isLoadFinish) {
                             postAdapter.hideLoading()
                         } else {
                             postAdapter.showLoading()
@@ -109,5 +114,6 @@ class PostsActivity : BaseActivity<ActivityMainBinding, PostsViewModel>() {
     }
 
     override fun afterBinding() {
+        viewModel.onEvent(PostsEvent.ReadFirst)
     }
 }

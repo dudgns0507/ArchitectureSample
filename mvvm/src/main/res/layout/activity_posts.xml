@@ -5,12 +5,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:descendantFocusability="blocksDescendants"
         tools:context=".ui.activity.posts.PostsActivity">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_post"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:descendantFocusability="blocksDescendants">
 
         </androidx.recyclerview.widget.RecyclerView>
 

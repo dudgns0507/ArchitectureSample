@@ -1,5 +1,6 @@
 package com.github.dudgns0507.mvvm.ui.activity.posts
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -44,10 +45,6 @@ class PostsViewModel @Inject constructor(
      *
      */
 
-    init {
-        onEvent(PostsEvent.ReadFirst)
-    }
-
     fun onEvent(event: PostsEvent) {
         when(event) {
             is PostsEvent.Read -> {
@@ -74,6 +71,11 @@ class PostsViewModel @Inject constructor(
     }
 
     private fun getPosts(start: Int, limit: Int, isFirstLoad: Boolean = false) {
+        Log.w("Debug", _postStates.value.toString())
+        Log.w("Debug", "start: $start, limit: $limit")
+        if(!isFirstLoad && _postStates.value.start == start && _postStates.value.limit == limit) {
+            return
+        }
         getPostsJob = viewModelScope.launch {
             jsonUseCases.getPostsUseCase(start, limit)
                 .onStart {
@@ -88,6 +90,7 @@ class PostsViewModel @Inject constructor(
                     // Result Handling
                     when(result) {
                         is Resource.Success -> {
+                            Log.w("Debug", result.data.toString())
                             postStates.value.let {
                                 if(result.data.isNotEmpty()) {
                                     when (isFirstLoad) {
