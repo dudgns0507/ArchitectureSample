@@ -8,15 +8,18 @@ abstract class BaseDiffAdapter<T : Any, V : RecyclerView.ViewHolder> :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), DiffCallBack<T> {
 
     private val adapter: BaseDiffAdapter<T, V> by lazy { this }
-    var asyncDiffer = AsyncListDiffer(adapter, object : DiffUtil.ItemCallback<T>() {
-        override fun areItemsTheSame(oldItem: T, newItem: T): Boolean {
-            return isNewItem(oldItem, newItem)
-        }
+    var asyncDiffer = AsyncListDiffer(
+        adapter,
+        object : DiffUtil.ItemCallback<T>() {
+            override fun areItemsTheSame(oldItem: T, newItem: T): Boolean {
+                return isNewItem(oldItem, newItem)
+            }
 
-        override fun areContentsTheSame(oldItem: T, newItem: T): Boolean {
-            return isNewContent(oldItem, newItem)
+            override fun areContentsTheSame(oldItem: T, newItem: T): Boolean {
+                return isNewContent(oldItem, newItem)
+            }
         }
-    })
+    )
 
     override fun getItemCount(): Int {
         return asyncDiffer.currentList.size

@@ -47,7 +47,7 @@ class MyStandardJsonAdapters {
                 if (!reader.isLenient && java.lang.Float.isInfinite(value)) {
                     throw JsonDataException(
                         "JSON forbids NaN and infinities: " + value +
-                                " at path " + reader.path
+                            " at path " + reader.path
                     )
                 }
                 return value

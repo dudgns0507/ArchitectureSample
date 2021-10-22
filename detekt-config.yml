@@ -87,7 +87,7 @@ complexity:
     includePrivateDeclarations: false
   ComplexMethod:
     active: true
-    threshold: 15
+    threshold: 30
     ignoreSingleWhenExpression: false
     ignoreSimpleWhenEntries: false
     ignoreNestingFunctions: false
@@ -267,8 +267,7 @@ exceptions:
 
 formatting:
   active: true
-  android: false
-  autoCorrect: true
+  android: true
   AnnotationOnSeparateLine:
     active: false
     autoCorrect: true
@@ -691,7 +690,7 @@ style:
   NestedClassesVisibility:
     active: true
   NewLineAtEndOfFile:
-    active: true
+    active: false
   NoTabs:
     active: false
   ObjectLiteralToLambda:

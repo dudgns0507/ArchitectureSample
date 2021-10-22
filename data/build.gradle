@@ -41,8 +41,6 @@ android {
 }
 
 dependencies {
-    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:$detekt_version"
-
     implementation project(path: ':core')
     implementation project(path: ':domain')
 

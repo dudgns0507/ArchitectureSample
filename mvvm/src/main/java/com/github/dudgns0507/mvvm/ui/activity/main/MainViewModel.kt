@@ -18,7 +18,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     state: SavedStateHandle,
     private val jsonUseCases: JsonUseCases
-) : BaseViewModel(state) {
+) : BaseViewModel() {
 
     private var getPostsJob: Job? = null
     private val _postStates = MutableStateFlow(MainPostsState())

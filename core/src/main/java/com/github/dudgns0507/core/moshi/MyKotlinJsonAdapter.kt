@@ -156,7 +156,11 @@ internal class MyKotlinJsonAdapter<T>(
 }
 
 class MyKotlinJsonAdapterFactory : JsonAdapter.Factory {
-    override fun create(type: Type, annotations: MutableSet<out Annotation>, moshi: Moshi): JsonAdapter<*>? {
+    override fun create(
+        type: Type,
+        annotations: MutableSet<out Annotation>,
+        moshi: Moshi
+    ): JsonAdapter<*>? {
         if (annotations.isNotEmpty()) return null
 
         val rawType = Types.getRawType(type)

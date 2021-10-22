@@ -124,7 +124,8 @@ class DataRepositoryImpl(private val jsonService: JsonService) : DataRepository 
     override suspend fun patchPost(postId: Int, post: Post): Flow<Resource<Post>> {
         return flow {
             val response = jsonService.patchPost(
-                postId, ReqPostEdit(
+                postId,
+                ReqPostEdit(
                     title = post.title,
                     body = post.body
                 )

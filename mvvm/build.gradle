@@ -42,7 +42,6 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
-        kotlinCompilerVersion kotlin_version
     }
     packagingOptions {
         resources {
@@ -55,8 +54,6 @@ android {
 }
 
 dependencies {
-    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:$detekt_version"
-
     implementation project(path: ':core')
     implementation project(path: ':data')
     implementation project(path: ':domain')
