@@ -108,7 +108,6 @@ val Context.versionName: String?
         val pInfo = packageManager.getPackageInfo(packageName, 0);
         pInfo?.versionName
     } catch (e: PackageManager.NameNotFoundException) {
-        e.printStackTrace()
         "Unknown"
     }
 
@@ -122,6 +121,5 @@ val Context.versionCode: Long
             pInfo?.versionCode?.toLong() ?: 0L
         }
     } catch (e: PackageManager.NameNotFoundException) {
-        e.printStackTrace()
         0L
     }

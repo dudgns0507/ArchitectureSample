@@ -1,0 +1,16 @@
+apply plugin: 'io.gitlab.arturbosch.detekt'
+
+detekt {
+    toolVersion = "$detekt_version"
+    input = files("src/main/java")
+    config = files("../detekt-config.yml")
+    autoCorrect = true
+    reports {
+        xml {
+            enabled = true
+        }
+        html {
+            enabled = true
+        }
+    }
+}

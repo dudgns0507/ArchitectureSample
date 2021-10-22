@@ -29,7 +29,6 @@
 * UI
     * [Material design](https://material.io/design)
 * Lint
-    * [Ktlint](https://github.com/pinterest/ktlint)
     * [Detekt](https://github.com/arturbosch/detekt#with-gradle)
     
 Example
