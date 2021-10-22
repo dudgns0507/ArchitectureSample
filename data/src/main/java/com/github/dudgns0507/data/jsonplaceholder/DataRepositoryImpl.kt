@@ -51,17 +51,16 @@ class DataRepositoryImpl(private val jsonService: JsonService) : DataRepository 
 
     override suspend fun requestPostsEx1(start: Int, limit: Int): Resource<List<Post>> {
         val response = jsonService.requestPosts(start, limit)
-
-        if (response.isSuccessful) {
+        return if (response.isSuccessful) {
             val body = response.body()
 
             body?.let { posts ->
-                return Resource.Success(posts.map { post -> post.toModel() })
+                Resource.Success(posts.map { post -> post.toModel() })
             } ?: kotlin.run {
-                return Resource.Failure(null)
+                Resource.Failure(null)
             }
         } else {
-            return Resource.Failure(null)
+            Resource.Failure(null)
         }
     }
 

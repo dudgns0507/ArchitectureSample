@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Parcelable
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import com.github.dudgns0507.core.base.BaseActivity
 
@@ -21,37 +22,49 @@ fun Context.openBrowser(url: String) {
 }
 
 fun Context.isNetworkAvailable(): Boolean {
-    var result = false
     val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-    when {
+    return when {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
-            val networkCapabilities = cm.activeNetwork ?: return false
-            val actNw =
-                cm.getNetworkCapabilities(networkCapabilities) ?: return false
+            isNetworkAvailableOverLollipop(cm)
+        }
+        Build.VERSION.SDK_INT < Build.VERSION_CODES.M -> {
+            isNetworkAvailableElse(cm)
+        }
+        else -> false
+    }
+}
 
-            result = when {
+fun isNetworkAvailableElse(cm: ConnectivityManager): Boolean {
+    return cm.activeNetworkInfo?.let { info ->
+        when (info.type) {
+            ConnectivityManager.TYPE_WIFI -> true
+            ConnectivityManager.TYPE_MOBILE -> true
+            ConnectivityManager.TYPE_ETHERNET -> true
+            else -> false
+        }
+    } ?: run {
+        false
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.M)
+fun isNetworkAvailableOverLollipop(cm: ConnectivityManager): Boolean {
+    val networkCapabilities = cm.activeNetwork
+    return networkCapabilities?.let { net ->
+        cm.getNetworkCapabilities(net)?.let { actNw ->
+            when {
                 actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
                 actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
                 actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
                 else -> false
             }
+        } ?: run {
+            false
         }
-        else -> {
-            cm.run {
-                cm.activeNetworkInfo?.run {
-                    result = when (type) {
-                        ConnectivityManager.TYPE_WIFI -> true
-                        ConnectivityManager.TYPE_MOBILE -> true
-                        ConnectivityManager.TYPE_ETHERNET -> true
-                        else -> false
-                    }
-                }
-            }
-        }
+    } ?: run {
+        false
     }
-
-    return result
 }
 
 fun Context.toast(message: String) {

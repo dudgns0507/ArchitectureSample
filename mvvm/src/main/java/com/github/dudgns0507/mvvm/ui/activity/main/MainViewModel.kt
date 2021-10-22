@@ -2,7 +2,6 @@ package com.github.dudgns0507.mvvm.ui.activity.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.github.dudgns0507.core.base.BaseViewModel
 import com.github.dudgns0507.core.util.ext.request
@@ -16,7 +15,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    state: SavedStateHandle,
     private val jsonUseCases: JsonUseCases
 ) : BaseViewModel() {
 
@@ -68,7 +66,7 @@ class MainViewModel @Inject constructor(
                 getPosts(0, postStates.value.limit, isFirstLoad = true)
             }
             is MainPostsEvent.ReadMore -> {
-                getPosts(postStates.value.start + 10, postStates.value.limit)
+                getPosts(postStates.value.start + postStates.value.limit, postStates.value.limit)
             }
         }
     }

@@ -41,7 +41,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
         try {
             baseAct = requireActivity() as BaseActivity<*, *>
-        } catch (e: Exception) {
+        } catch (e: ClassCastException) {
             // not BaseActivity
         }
     }

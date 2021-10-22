@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.io.IOException
 
-open class BaseViewModel() : ViewModel() {
+open class BaseViewModel : ViewModel() {
     companion object {
         val TAG: String by lazy {
             val name = this::class.java.simpleName

@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import java.lang.Exception
+import java.text.ParseException
 
 abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : AppCompatActivity() {
     companion object {
@@ -32,7 +32,7 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : AppCompatA
     fun <B> initBundle(): B? {
         return try {
             intent.getParcelableExtra(BUNDLE_KEY)
-        } catch (e: Exception) {
+        } catch (e: ParseException) {
             null
         }
     }
