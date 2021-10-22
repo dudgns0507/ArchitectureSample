@@ -8,7 +8,6 @@ import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
 
-
 class NetworkInterceptor(val context: Context) : Interceptor {
     private val isConnected: Boolean
         get() = context.isNetworkAvailable()

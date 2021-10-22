@@ -17,9 +17,10 @@ object Utils {
         get() {
             val manufacturer = Build.MANUFACTURER
             val model = Build.MODEL
-            return if (model.startsWith(manufacturer))
+            return if (model.startsWith(manufacturer)) {
                 model.uppercase(Locale.getDefault())
-            else
+            } else {
                 manufacturer.uppercase(Locale.getDefault()) + " " + model
+            }
         }
 }

@@ -1,21 +1,16 @@
 package com.github.dudgns0507.core.util.ext
 
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Resources
-import android.graphics.Point
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Parcelable
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.github.dudgns0507.core.base.BaseActivity
-import com.google.android.material.snackbar.Snackbar
 
 fun Context.openBrowser(url: String) {
     val uri = Uri.parse(url)
@@ -51,7 +46,6 @@ fun Context.isNetworkAvailable(): Boolean {
                         ConnectivityManager.TYPE_ETHERNET -> true
                         else -> false
                     }
-
                 }
             }
         }
@@ -105,7 +99,7 @@ fun Context.color(id: Int): Int {
 
 val Context.versionName: String?
     get() = try {
-        val pInfo = packageManager.getPackageInfo(packageName, 0);
+        val pInfo = packageManager.getPackageInfo(packageName, 0)
         pInfo?.versionName
     } catch (e: PackageManager.NameNotFoundException) {
         "Unknown"

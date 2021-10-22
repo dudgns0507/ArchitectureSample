@@ -49,9 +49,9 @@ class MainViewModel @Inject constructor(
     }
 
     fun onEvent(event: MainPostsEvent) {
-        when(event) {
+        when (event) {
             is MainPostsEvent.Read -> {
-                if(event.start == postStates.value.start &&
+                if (event.start == postStates.value.start &&
                     event.limit == postStates.value.limit
                 ) {
                     return
@@ -86,10 +86,10 @@ class MainViewModel @Inject constructor(
                 .collect { result ->
                     // Hide Loading
                     // Result Handling
-                    when(result) {
+                    when (result) {
                         is Resource.Success -> {
                             postStates.value.let {
-                                if(result.data.isNotEmpty()) {
+                                if (result.data.isNotEmpty()) {
                                     when (isFirstLoad) {
                                         true -> _postStates.value = it.copy(
                                             posts = result.data,
@@ -120,7 +120,7 @@ class MainViewModel @Inject constructor(
 
     private fun getPostsEx1(start: Int, limit: Int) {
         viewModelScope.launch {
-            when(val result = jsonUseCases.getPostsUseCaseEx1(start, limit)) {
+            when (val result = jsonUseCases.getPostsUseCaseEx1(start, limit)) {
                 is Resource.Success -> {
                     postStates.value.let {
                         _postStates.value = it.copy(
@@ -160,7 +160,6 @@ class MainViewModel @Inject constructor(
                 }
             },
             onFailure = { _, _ ->
-
             }
         )
     }

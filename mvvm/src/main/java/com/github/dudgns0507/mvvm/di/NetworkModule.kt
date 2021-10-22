@@ -5,7 +5,6 @@ import com.github.dudgns0507.core.Constant
 import com.github.dudgns0507.core.moshi.MyKotlinJsonAdapterFactory
 import com.github.dudgns0507.core.moshi.MyStandardJsonAdapters
 import com.github.dudgns0507.core.util.network.NetworkInterceptor
-import com.github.dudgns0507.core.util.network.SafeCallAdapterFactory
 import com.github.dudgns0507.data.jsonplaceholder.JsonService
 import com.github.dudgns0507.mvvm.BuildConfig
 import com.squareup.moshi.Moshi
@@ -25,8 +24,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 class NetworkModule {
-    private val timeoutRead = 30   //In seconds
-    private val timeoutConnect = 30   //In seconds
+    private val timeoutRead = 30 // In seconds
+    private val timeoutConnect = 30 // In seconds
     private val contentType = "Content-Type"
     private val contentTypeValue = "application/json"
 

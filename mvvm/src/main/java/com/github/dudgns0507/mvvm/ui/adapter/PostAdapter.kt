@@ -26,7 +26,7 @@ import com.github.dudgns0507.mvvm.ui.holder.PostViewHolder
  *
  * DiffUtil only refreshes modified data.
  * Use DiffUtil to increase loading performance.
- * 
+ *
  *
  * Default methods are identical to BaseAdapter's.
  *

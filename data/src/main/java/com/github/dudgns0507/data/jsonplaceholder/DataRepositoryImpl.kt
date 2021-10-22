@@ -1,9 +1,7 @@
 package com.github.dudgns0507.data.jsonplaceholder
 
-import com.github.dudgns0507.core.util.ext.request
 import com.github.dudgns0507.core.util.network.Resource
 import com.github.dudgns0507.data.jsonplaceholder.model.request.ReqPostEdit
-import com.github.dudgns0507.data.jsonplaceholder.model.response.ResPost
 import com.github.dudgns0507.domain.dto.Comment
 import com.github.dudgns0507.domain.dto.Post
 import com.github.dudgns0507.domain.repository.DataRepository

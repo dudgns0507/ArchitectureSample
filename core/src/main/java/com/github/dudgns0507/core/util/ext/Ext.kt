@@ -49,7 +49,7 @@ fun <T> Call<T>.asCallbackFLow() = callbackFlow<T> {
     awaitClose()
 }
 
-fun<T> Call<T>.request(
+fun <T> Call<T>.request(
     onResponse: (call: Call<T>, response: Response<T>) -> Unit,
     onFailure: (call: Call<T>, t: Throwable) -> Unit
 ) {

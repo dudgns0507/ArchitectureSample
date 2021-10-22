@@ -29,7 +29,7 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : AppCompatA
 
     val ctx: Context by lazy { this }
 
-    fun<B> initBundle(): B? {
+    fun <B> initBundle(): B? {
         return try {
             intent.getParcelableExtra(BUNDLE_KEY)
         } catch (e: Exception) {

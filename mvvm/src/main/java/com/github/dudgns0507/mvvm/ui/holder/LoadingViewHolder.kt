@@ -10,7 +10,7 @@ class LoadingViewHolder(
 ) : BaseViewHolder<LoadingItemBinding, Boolean>(binding) {
 
     override fun bind(position: Int, item: Boolean) {
-        when(item) {
+        when (item) {
             true -> binding.pbLoading.visible()
             false -> binding.pbLoading.gone()
         }
