@@ -16,7 +16,7 @@ fun View.gone() {
 }
 
 fun View.snackBar(message: String, action: String = "", listener: View.OnClickListener? = null) {
-    if(action.isNotBlank() && listener != null) {
+    if (action.isNotBlank() && listener != null) {
         Snackbar.make(this, message, Snackbar.LENGTH_LONG).setAction(action, listener).show()
     } else {
         Snackbar.make(this, message, Snackbar.LENGTH_LONG).show()

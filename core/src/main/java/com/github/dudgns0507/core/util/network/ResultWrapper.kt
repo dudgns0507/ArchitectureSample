@@ -2,7 +2,6 @@ package com.github.dudgns0507.core.util.network
 
 import androidx.lifecycle.MutableLiveData
 import okhttp3.Headers
-import retrofit2.Response
 import java.io.IOException
 
 sealed class ResultWrapper<out T : Any, out U : Any> {

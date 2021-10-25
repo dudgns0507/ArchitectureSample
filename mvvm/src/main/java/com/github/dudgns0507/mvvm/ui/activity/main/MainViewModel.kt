@@ -2,7 +2,6 @@ package com.github.dudgns0507.mvvm.ui.activity.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.github.dudgns0507.core.base.BaseViewModel
 import com.github.dudgns0507.core.util.ext.request
@@ -16,9 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    state: SavedStateHandle,
     private val jsonUseCases: JsonUseCases
-) : BaseViewModel(state) {
+) : BaseViewModel() {
 
     private var getPostsJob: Job? = null
     private val _postStates = MutableStateFlow(MainPostsState())
@@ -49,9 +47,9 @@ class MainViewModel @Inject constructor(
     }
 
     fun onEvent(event: MainPostsEvent) {
-        when(event) {
+        when (event) {
             is MainPostsEvent.Read -> {
-                if(event.start == postStates.value.start &&
+                if (event.start == postStates.value.start &&
                     event.limit == postStates.value.limit
                 ) {
                     return
@@ -68,7 +66,7 @@ class MainViewModel @Inject constructor(
                 getPosts(0, postStates.value.limit, isFirstLoad = true)
             }
             is MainPostsEvent.ReadMore -> {
-                getPosts(postStates.value.start + 10, postStates.value.limit)
+                getPosts(postStates.value.start + postStates.value.limit, postStates.value.limit)
             }
         }
     }
@@ -86,10 +84,10 @@ class MainViewModel @Inject constructor(
                 .collect { result ->
                     // Hide Loading
                     // Result Handling
-                    when(result) {
+                    when (result) {
                         is Resource.Success -> {
                             postStates.value.let {
-                                if(result.data.isNotEmpty()) {
+                                if (result.data.isNotEmpty()) {
                                     when (isFirstLoad) {
                                         true -> _postStates.value = it.copy(
                                             posts = result.data,
@@ -120,7 +118,7 @@ class MainViewModel @Inject constructor(
 
     private fun getPostsEx1(start: Int, limit: Int) {
         viewModelScope.launch {
-            when(val result = jsonUseCases.getPostsUseCaseEx1(start, limit)) {
+            when (val result = jsonUseCases.getPostsUseCaseEx1(start, limit)) {
                 is Resource.Success -> {
                     postStates.value.let {
                         _postStates.value = it.copy(
@@ -160,7 +158,6 @@ class MainViewModel @Inject constructor(
                 }
             },
             onFailure = { _, _ ->
-
             }
         )
     }

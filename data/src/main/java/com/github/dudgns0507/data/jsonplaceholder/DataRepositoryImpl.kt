@@ -1,9 +1,7 @@
 package com.github.dudgns0507.data.jsonplaceholder
 
-import com.github.dudgns0507.core.util.ext.request
 import com.github.dudgns0507.core.util.network.Resource
 import com.github.dudgns0507.data.jsonplaceholder.model.request.ReqPostEdit
-import com.github.dudgns0507.data.jsonplaceholder.model.response.ResPost
 import com.github.dudgns0507.domain.dto.Comment
 import com.github.dudgns0507.domain.dto.Post
 import com.github.dudgns0507.domain.repository.DataRepository
@@ -53,17 +51,16 @@ class DataRepositoryImpl(private val jsonService: JsonService) : DataRepository 
 
     override suspend fun requestPostsEx1(start: Int, limit: Int): Resource<List<Post>> {
         val response = jsonService.requestPosts(start, limit)
-
-        if (response.isSuccessful) {
+        return if (response.isSuccessful) {
             val body = response.body()
 
             body?.let { posts ->
-                return Resource.Success(posts.map { post -> post.toModel() })
+                Resource.Success(posts.map { post -> post.toModel() })
             } ?: kotlin.run {
-                return Resource.Failure(null)
+                Resource.Failure(null)
             }
         } else {
-            return Resource.Failure(null)
+            Resource.Failure(null)
         }
     }
 
@@ -126,7 +123,8 @@ class DataRepositoryImpl(private val jsonService: JsonService) : DataRepository 
     override suspend fun patchPost(postId: Int, post: Post): Flow<Resource<Post>> {
         return flow {
             val response = jsonService.patchPost(
-                postId, ReqPostEdit(
+                postId,
+                ReqPostEdit(
                     title = post.title,
                     body = post.body
                 )

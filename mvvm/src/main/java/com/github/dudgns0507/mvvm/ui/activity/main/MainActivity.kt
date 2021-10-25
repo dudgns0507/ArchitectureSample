@@ -34,7 +34,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             postAdapter = PostAdapter().apply {
                 onItemClickListener = object : OnItemClickListener<Post> {
                     override fun onItemClicked(position: Int, item: Post) {
-                        openDetail(item)
                     }
                 }
             }
@@ -47,7 +46,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     if (!rvPost.canScrollVertically(1)) {
-                        val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
+                        val lm = recyclerView.layoutManager as LinearLayoutManager
+                        val lastVisibleItemPosition =
+                            lm.findLastCompletelyVisibleItemPosition()
                         val itemTotalCount = recyclerView.adapter!!.itemCount - 1
 
                         if (lastVisibleItemPosition == itemTotalCount) {
@@ -58,9 +59,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 }
             })
         }
-    }
-
-    private fun openDetail(item: Post) {
     }
 
     /**
@@ -95,9 +93,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             lifecycleScope.launchWhenCreated {
                 postStates.collect { state ->
                     Log.w("Debug", "start : ${state.start}, isLoadFinish : ${state.isLoadFinish}")
-                    if(state.posts.size > postAdapter.listSize) {
+                    if (state.posts.size > postAdapter.listSize) {
                         postAdapter.updateList(state.posts)
-                        if(state.isLoadFinish) {
+                        if (state.isLoadFinish) {
                             postAdapter.hideLoading()
                         } else {
                             postAdapter.showLoading()

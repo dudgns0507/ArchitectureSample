@@ -2,13 +2,9 @@ package com.github.dudgns0507.mvvm.di
 
 import android.content.Context
 import com.github.dudgns0507.core.Constant
-import com.github.dudgns0507.core.moshi.MyKotlinJsonAdapterFactory
-import com.github.dudgns0507.core.moshi.MyStandardJsonAdapters
 import com.github.dudgns0507.core.util.network.NetworkInterceptor
-import com.github.dudgns0507.core.util.network.SafeCallAdapterFactory
 import com.github.dudgns0507.data.jsonplaceholder.JsonService
 import com.github.dudgns0507.mvvm.BuildConfig
-import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,15 +14,15 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
 class NetworkModule {
-    private val timeoutRead = 30   //In seconds
-    private val timeoutConnect = 30   //In seconds
+    private val timeoutRead = 30 // In seconds
+    private val timeoutConnect = 30 // In seconds
     private val contentType = "Content-Type"
     private val contentTypeValue = "application/json"
 
@@ -52,15 +48,6 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideMoshi(): Moshi {
-        return Moshi.Builder()
-            .add(MyKotlinJsonAdapterFactory())
-            .add(MyStandardJsonAdapters.FACTORY)
-            .build()
-    }
-
-    @Provides
-    @Singleton
     fun provideOkHttpClient(@ApplicationContext context: Context): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(headerInterceptor)
@@ -73,11 +60,11 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(moshi: Moshi, okHttpClient: OkHttpClient): Retrofit {
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(Constant.url)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 

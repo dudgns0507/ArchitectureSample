@@ -33,7 +33,10 @@ android {
         jvmTarget = '11'
     }
     buildFeatures {
-        dataBinding = true
+        dataBinding true
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 

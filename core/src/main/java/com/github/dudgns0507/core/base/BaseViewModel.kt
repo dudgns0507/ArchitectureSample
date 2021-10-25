@@ -2,11 +2,10 @@ package com.github.dudgns0507.core.base
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import java.io.IOException
 
-open class BaseViewModel(private val state: SavedStateHandle) : ViewModel() {
+open class BaseViewModel : ViewModel() {
     companion object {
         val TAG: String by lazy {
             val name = this::class.java.simpleName
