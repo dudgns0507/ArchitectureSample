@@ -2,7 +2,6 @@ package com.github.dudgns0507.core.util.network
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

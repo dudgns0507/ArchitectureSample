@@ -3,7 +3,6 @@ package com.github.dudgns0507.data.jsonplaceholder.model.response
 import android.os.Parcelable
 import com.github.dudgns0507.domain.dto.Comment
 import com.google.gson.annotations.SerializedName
-import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
