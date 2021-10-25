@@ -1,6 +1,6 @@
 # Android-Architecture-Sample
  Android Architecture Study with MVVM and MVI
- Using DI(Hilt) + Retrofit + Coroutine + Moshi + AAC
+ Using DI(Hilt) + Retrofit + Coroutine + Gson + AAC
 
 * Stack
     * [100% Kotlin](https://kotlinlang.org/) + [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)

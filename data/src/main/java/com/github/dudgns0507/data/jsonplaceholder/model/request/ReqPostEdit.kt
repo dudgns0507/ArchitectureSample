@@ -1,13 +1,11 @@
 package com.github.dudgns0507.data.jsonplaceholder.model.request
 
 import android.os.Parcelable
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
-@JsonClass(generateAdapter = false)
 @Parcelize
 data class ReqPostEdit(
-    @Json(name = "title") val title: String = "",
-    @Json(name = "body") val body: String = "",
+    @SerializedName("title") val title: String = "",
+    @SerializedName("body") val body: String = "",
 ) : Parcelable

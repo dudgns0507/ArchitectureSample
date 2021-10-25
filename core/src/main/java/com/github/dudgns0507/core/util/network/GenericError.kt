@@ -1,13 +1,12 @@
 package com.github.dudgns0507.core.util.network
 
 import android.os.Parcelable
-import com.squareup.moshi.Json
+import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 
-@JsonClass(generateAdapter = false)
 @Parcelize
 data class GenericError(
-    @Json(name = "status_code") val statusCode: String,
-    @Json(name = "status_message") val statusMessage: String
+    @SerializedName("status_code") val statusCode: String,
+    @SerializedName("status_message") val statusMessage: String
 ) : Parcelable
