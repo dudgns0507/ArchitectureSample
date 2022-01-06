@@ -2,8 +2,8 @@ package com.github.dudgns0507.data.jsonplaceholder
 
 import com.github.dudgns0507.core.util.network.Resource
 import com.github.dudgns0507.data.jsonplaceholder.model.request.ReqPostEdit
-import com.github.dudgns0507.domain.dto.Comment
-import com.github.dudgns0507.domain.dto.Post
+import com.github.dudgns0507.domain.dto.CommentEntity
+import com.github.dudgns0507.domain.dto.PostEntity
 import com.github.dudgns0507.domain.repository.DataRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -19,7 +19,7 @@ class DataRepositoryImpl(private val jsonService: JsonService) : DataRepository 
      * Resource.Success - means "receive success" and body isn't null or empty.
      * Resource.Failure - means "failed to receive data from server". Send a Throwable here to handle Errors.
      */
-    override suspend fun requestPosts(start: Int, limit: Int): Flow<Resource<List<Post>>> {
+    override suspend fun requestPosts(start: Int, limit: Int): Flow<Resource<List<PostEntity>>> {
         return flow {
             emit(Resource.Loading())
             val response = jsonService.requestPosts(start, limit)
@@ -49,7 +49,7 @@ class DataRepositoryImpl(private val jsonService: JsonService) : DataRepository 
      * Resource.Failure - means "failed to receive data from server". Send a Throwable here to handle Errors.
      */
 
-    override suspend fun requestPostsEx1(start: Int, limit: Int): Resource<List<Post>> {
+    override suspend fun requestPostsEx1(start: Int, limit: Int): Resource<List<PostEntity>> {
         val response = jsonService.requestPosts(start, limit)
         return if (response.isSuccessful) {
             val body = response.body()
@@ -72,15 +72,15 @@ class DataRepositoryImpl(private val jsonService: JsonService) : DataRepository 
      * If header data is required, using Response or Call class instead is recommended.
      */
 
-    override suspend fun requestPostsEx2(start: Int, limit: Int): List<Post> {
+    override suspend fun requestPostsEx2(start: Int, limit: Int): List<PostEntity> {
         return jsonService.requestPostsEx2(start, limit).map { it.toModel() }
     }
 
-    override fun requestPostsEx3(start: Int, limit: Int): Call<List<Post>> {
+    override fun requestPostsEx3(start: Int, limit: Int): Call<List<PostEntity>> {
         return jsonService.requestPostsEx3(start, limit)
     }
 
-    override suspend fun requestPost(postId: Int): Flow<Resource<Post>> {
+    override suspend fun requestPost(postId: Int): Flow<Resource<PostEntity>> {
         return flow {
             val response = jsonService.requestPost(postId)
 
@@ -98,7 +98,7 @@ class DataRepositoryImpl(private val jsonService: JsonService) : DataRepository 
         }
     }
 
-    override suspend fun requestPostComments(postId: Int): Flow<Resource<List<Comment>>> {
+    override suspend fun requestPostComments(postId: Int): Flow<Resource<List<CommentEntity>>> {
         return flow {
             val response = jsonService.requestPostComments(postId)
 
@@ -120,7 +120,7 @@ class DataRepositoryImpl(private val jsonService: JsonService) : DataRepository 
         jsonService.deletePost(postId)
     }
 
-    override suspend fun patchPost(postId: Int, post: Post): Flow<Resource<Post>> {
+    override suspend fun patchPost(postId: Int, post: PostEntity): Flow<Resource<PostEntity>> {
         return flow {
             val response = jsonService.patchPost(
                 postId,

@@ -3,7 +3,7 @@ package com.github.dudgns0507.data.jsonplaceholder
 import com.github.dudgns0507.data.jsonplaceholder.model.request.ReqPostEdit
 import com.github.dudgns0507.data.jsonplaceholder.model.response.ResComment
 import com.github.dudgns0507.data.jsonplaceholder.model.response.ResPost
-import com.github.dudgns0507.domain.dto.Post
+import com.github.dudgns0507.domain.dto.PostEntity
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -25,7 +25,7 @@ interface JsonService {
     fun requestPostsEx3(
         @Query("_start") start: Int,
         @Query("_limit") limit: Int
-    ): Call<List<Post>>
+    ): Call<List<PostEntity>>
 
     @GET("posts/{postId}")
     suspend fun requestPost(

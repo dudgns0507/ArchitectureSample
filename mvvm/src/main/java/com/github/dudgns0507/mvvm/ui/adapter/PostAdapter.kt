@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.github.dudgns0507.core.base.BaseDiffAdapter
 import com.github.dudgns0507.core.base.OnItemClickListener
-import com.github.dudgns0507.domain.dto.Post
+import com.github.dudgns0507.domain.dto.PostEntity
 import com.github.dudgns0507.mvvm.databinding.LoadingItemBinding
 import com.github.dudgns0507.mvvm.databinding.PostItemBinding
 import com.github.dudgns0507.mvvm.ui.holder.LoadingViewHolder
@@ -37,14 +37,14 @@ import com.github.dudgns0507.mvvm.ui.holder.PostViewHolder
  *
  */
 
-class PostAdapter : BaseDiffAdapter<Post, PostViewHolder>() {
+class PostAdapter : BaseDiffAdapter<PostEntity, PostViewHolder>() {
     companion object {
         private const val POST_VIEW = 0
         private const val LOADING_VIEW = 1
     }
 
     private var isLoading = false
-    lateinit var onItemClickListener: OnItemClickListener<Post>
+    lateinit var onItemClickListener: OnItemClickListener<PostEntity>
     val listSize get() = super.getItemCount()
 
     /**
@@ -106,11 +106,11 @@ class PostAdapter : BaseDiffAdapter<Post, PostViewHolder>() {
         }
     }
 
-    override fun isNewItem(oldItem: Post, newItem: Post): Boolean {
+    override fun isNewItem(oldItem: PostEntity, newItem: PostEntity): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun isNewContent(oldItem: Post, newItem: Post): Boolean {
+    override fun isNewContent(oldItem: PostEntity, newItem: PostEntity): Boolean {
         return oldItem == newItem
     }
 }

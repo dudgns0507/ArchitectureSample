@@ -3,9 +3,21 @@ package com.github.dudgns0507.core.base
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.io.IOException
 
-open class BaseViewModel : ViewModel() {
+sealed class CommonError {
+    object NetworkError : CommonError()
+    class DataError(val message: String, val data: Any) : CommonError()
+    class UnknownError(val throwable: Throwable? = null, error: IOException? = null) : CommonError()
+}
+
+open class BaseViewModel<T : BaseEvent> : ViewModel() {
     companion object {
         val TAG: String by lazy {
             val name = this::class.java.simpleName
@@ -14,27 +26,45 @@ open class BaseViewModel : ViewModel() {
         }
     }
 
-    private val _genericError = MutableLiveData<String>()
-    val genericError: LiveData<String>
-        get() = _genericError
+    private val _eventsFlow = MutableSharedFlow<T>()
+    val eventsFlow: SharedFlow<T> = _eventsFlow
 
-    private val _netWorkError = MutableLiveData<String>()
-    val netWorkError: LiveData<String>
-        get() = _netWorkError
+    open fun initialize() {}
 
-    private val _unKnownError = MutableLiveData<String>()
-    val unKnownError: LiveData<String>
-        get() = _unKnownError
-
-    private fun showUnknownError(throwable: Throwable) {
-        _unKnownError.postValue("UnknownError")
+    open fun onEvent(event: T) {
+        when (event) {
+            BaseEvent.Reload -> initialize()
+        }
+        viewModelScope.launch { _eventsFlow.emit(event) }
     }
 
-    private fun showNetworkError(error: IOException) {
-        _netWorkError.postValue("NetWorkError")
+    fun runEvent(event: T) {
+        onEvent(event)
     }
 
-    private fun showGenericError(error: String) {
-        _genericError.postValue(error)
+    private val _loading = MutableStateFlow(false)
+    val loading: StateFlow<Boolean> = _loading
+
+    private val _error = MutableLiveData<CommonError>()
+    val error: LiveData<CommonError> = _error
+
+    fun loading(state: Boolean) {
+        _loading.value = state
+    }
+
+    protected fun showUnknownError(throwable: Throwable) {
+        _error.postValue(CommonError.UnknownError(throwable))
+    }
+
+    protected fun showNetworkError(error: IOException? = null) {
+        _error.postValue(CommonError.UnknownError(error))
+    }
+
+    protected fun showTokenError() {
+        // Login Token Failed Auth
+    }
+
+    protected fun showDataError(message: String, data: Any) {
+        _error.postValue(CommonError.DataError(message, data))
     }
 }

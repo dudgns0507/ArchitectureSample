@@ -4,17 +4,16 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.dudgns0507.core.base.BaseActivity
 import com.github.dudgns0507.core.base.OnItemClickListener
-import com.github.dudgns0507.domain.dto.Post
+import com.github.dudgns0507.core.util.ext.observe
+import com.github.dudgns0507.domain.dto.PostEntity
 import com.github.dudgns0507.mvvm.R
 import com.github.dudgns0507.mvvm.databinding.ActivityMainBinding
 import com.github.dudgns0507.mvvm.ui.adapter.PostAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
@@ -32,8 +31,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override fun initBinding() {
         binding.apply {
             postAdapter = PostAdapter().apply {
-                onItemClickListener = object : OnItemClickListener<Post> {
-                    override fun onItemClicked(position: Int, item: Post) {
+                onItemClickListener = object : OnItemClickListener<PostEntity> {
+                    override fun onItemClicked(position: Int, item: PostEntity) {
                     }
                 }
             }
@@ -88,19 +87,27 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
      *
      */
 
-    override fun initObserve() {
-        viewModel.apply {
-            lifecycleScope.launchWhenCreated {
-                postStates.collect { state ->
-                    Log.w("Debug", "start : ${state.start}, isLoadFinish : ${state.isLoadFinish}")
-                    if (state.posts.size > postAdapter.listSize) {
-                        postAdapter.updateList(state.posts)
-                        if (state.isLoadFinish) {
-                            postAdapter.hideLoading()
-                        } else {
-                            postAdapter.showLoading()
-                        }
-                    }
+    override fun initObserve(): Unit = with(viewModel) {
+        /**
+         * Previous way to observe state
+         *
+         * viewModel.apply {
+         *      lifecycleScope.launchWhenCreated {
+         *          postStates.collect { state ->
+         *          }
+         *      }
+         * }
+         *
+         */
+
+        observe(postStates) { state ->
+            Log.w("Debug", "start : ${state.start}, isLoadFinish : ${state.isLoadFinish}")
+            if (state.posts.size > postAdapter.listSize) {
+                postAdapter.updateList(state.posts)
+                if (state.isLoadFinish) {
+                    postAdapter.hideLoading()
+                } else {
+                    postAdapter.showLoading()
                 }
             }
         }

@@ -1,7 +1,7 @@
 package com.github.dudgns0507.data.jsonplaceholder.model.response
 
 import android.os.Parcelable
-import com.github.dudgns0507.domain.dto.Post
+import com.github.dudgns0507.domain.dto.PostEntity
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
@@ -12,8 +12,8 @@ data class ResPost(
     @SerializedName("title") val title: String = "",
     @SerializedName("body") val body: String = "",
 ) : Parcelable {
-    fun toModel(): Post {
-        return Post(
+    fun toModel(): PostEntity {
+        return PostEntity(
             id = id,
             userId = userId,
             title = title,
